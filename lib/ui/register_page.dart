@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
+import 'services/usermanagement.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -12,6 +13,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   TextEditingController emailcontrol =TextEditingController();
   TextEditingController passcontrol =TextEditingController();
   TextEditingController passconfcontrol =TextEditingController();
+  TextEditingController depart =TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
 
   @override
@@ -52,24 +54,33 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   else if(passcontrol.text != passconfcontrol.text) return "Password Not Same";
                 }
               ),
+              TextFormField(
+                decoration:InputDecoration(labelText: "Department"),
+                obscureText: true,
+                controller: depart,
+                validator: (value){
+                  if(value.isEmpty) return "Department is required";
+                }
+              ),
               Row(
                 children: <Widget>[
                   Expanded(
                     flex: 1,
                     child: RaisedButton(
                       child: Text("Register"),
-                      onPressed: (){
-                        if(_formkey.currentState.validate()){
-                          auth
-                          .createUserWithEmailAndPassword(
-                            email: emailcontrol.text,
-                            password: passcontrol.text)
-                            .then((FirebaseUser user){
-                              user.sendEmailVerification();
-                              print("--------return from firebase $user.email");
-                            });
-                          // Navigator.pushNamed(context, "/");
-                        }
+                      onPressed: () {
+                            auth.createUserWithEmailAndPassword(
+                            email: emailcontrol.text, password: passcontrol.text).then((signedInUser) {
+                          UserManagement().storeNewUser(signedInUser, context);
+                          
+                          }).catchError((e) {
+                            print(e);
+                        });
+                          if (_formkey.currentState.validate()) {
+                    Firestore.instance.collection('/New').add({
+                    'Department': depart.text
+    });
+                  }
                       },
                     ),
                   ),

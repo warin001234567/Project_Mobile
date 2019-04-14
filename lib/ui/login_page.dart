@@ -6,7 +6,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final _formkey =GlobalKey<FormState>();
+  
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
   FirebaseAuth _auth =FirebaseAuth.instance;
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           if(user.isEmailVerified){
                             print("Go to home screen");
                           }else{
-                            print("Please Check your email to verified account");
+                            Navigator.pushNamed(context, "/homepage");
                           }
                         });
                       },

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import './ui/login_page.dart';
 import './ui/register_page.dart';
-
+import './ui/homepage.dart';
+import './ui/show.dart';
+import './ui/add.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -18,6 +20,9 @@ class MyApp extends StatelessWidget {
       routes:{
        "/" :(context) => LoginScreen(),
        "/register": (context) => RegisterScreen(),
+       '/homepage': (BuildContext context) => HomePage(),
+       "/show": (context) => Listuser(),
+       "/add": (context) => Adddoctor(),
         },
     );
   }
