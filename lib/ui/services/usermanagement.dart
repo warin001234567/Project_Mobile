@@ -6,7 +6,7 @@ class UserManagement {
   storeNewUser(user, context) {
     Firestore.instance.collection('/users').add({
       'email': user.email,
-      'uid': user.uid
+      'uid': user.uid+"patient"
     }).then((value) {
       Navigator.of(context).pop();
       Navigator.of(context).pushReplacementNamed('/homepage');

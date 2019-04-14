@@ -55,10 +55,20 @@ class AdddoctorState extends State<Adddoctor> {
                     // });
                     Firestore.instance.collection('/New').add({
                     'Name': _title.text,'Department': _author.text
-    });
+                      });
+                    
                   }
                 },
-              )
+              ),
+              RaisedButton(
+                child: Text("delete"),
+                onPressed: () {
+                  if (_formkey.currentState.validate()) {
+                    Firestore.instance.collection('Doctor').document().delete();
+                    print("OKLLLLLLLLLLLLLLL");
+                  }
+                },
+              ),
             ],
           ),
         ),
