@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import './services/usermanagement.dart';
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -44,11 +47,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         _auth.signInWithEmailAndPassword(
                           email: emailcontroller.text,
                           password: passwordcontroller.text,
-                        ).then((FirebaseUser user){
+                        ).then((FirebaseUser user) async {
                           if(user.isEmailVerified){
                             print("Go to home screen");
                           }else{
-                            Navigator.pushNamed(context, "/homepage");
+                            UserManagement().authorizeAccess(context);
                           }
                         });
                       },
@@ -57,6 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   FlatButton(
                     child: Text("Register new account"),
                     onPressed: (){
+                      
                       Navigator.pushNamed(context, "/register");
                     },
                   )

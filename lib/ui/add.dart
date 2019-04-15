@@ -65,6 +65,7 @@ class AdddoctorState extends State<Adddoctor> {
                 onPressed: () {
                   if (_formkey.currentState.validate()) {
                     Firestore.instance.collection('Doctor').document().delete();
+                    
                     print("OKLLLLLLLLLLLLLLL");
                   }
                 },

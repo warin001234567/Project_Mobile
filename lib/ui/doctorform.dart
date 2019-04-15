@@ -72,7 +72,7 @@ class _DoctorFormState extends State<DoctorForm> {
               ),
               TextFormField(
                 decoration:InputDecoration(labelText: "Name"),
-                obscureText: true,
+
                 controller: name,
                 validator: (value){
                   if(value.isEmpty) return "Name is required";
@@ -80,7 +80,7 @@ class _DoctorFormState extends State<DoctorForm> {
               ),
               TextFormField(
                 decoration:InputDecoration(labelText: "Department"),
-                obscureText: true,
+
                 controller: department,
                 validator: (value){
                   if(value.isEmpty) return "Department is required";
@@ -95,12 +95,11 @@ class _DoctorFormState extends State<DoctorForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((signedInUser) {
-                          UserManagement().storeNewUser(signedInUser, context);
+                          UserManagement().storeNewUserD(signedInUser, context);
                           
                           }).catchError((e) {
                             print(e);
                         });
-                          
                     Firestore.instance.collection('/Doctor').add({
                     'Name': name.text, 'Department' : department.text
     });

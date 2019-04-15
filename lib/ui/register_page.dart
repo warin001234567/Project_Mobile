@@ -41,6 +41,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     icon: Icon(Icons.pan_tool),
                     onPressed: () {
                       Navigator.push(context,MaterialPageRoute(builder: (context) => PatientForm()));
+                      
                     },)
                 ],
               ),

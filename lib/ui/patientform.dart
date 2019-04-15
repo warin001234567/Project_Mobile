@@ -93,13 +93,15 @@ class _PatientFormState extends State<PatientForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((signedInUser) {
-                          UserManagement().storeNewUser(signedInUser, context);
+                          UserManagement().storeNewUserP(signedInUser, context);
                           
                           }).catchError((e) {
                             print(e);
                         });
+                    Firestore.instance.collection('/users').add({
+                    'role': "Patient", });
                     Firestore.instance.collection('/Patient').add({
-                    'Name': name.text, 'Department' : symptom.text
+                    'Name': name.text, 'Symtomp' : symptom.text
     });
                       },
                     ),
