@@ -11,7 +11,7 @@ class UserManagement {
       .then((dosc){
         if(dosc.documents[0].exists){
         if(dosc.documents[0].data['role'] == 'Doctor'){
-          Navigator.pushNamed(context, "/chat");
+          Navigator.pushNamed(context, "/homepage");
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){
           Navigator.pushNamed(context, "/homepage");

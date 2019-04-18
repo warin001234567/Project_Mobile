@@ -5,13 +5,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 
 class Chat extends StatefulWidget {
+  final String groupId;
+  final String peerId;
+  final String userId;
+  Chat({Key key, this.groupId,this.peerId,this.userId}) : super(key:key);
   @override
   _ChatState createState() => _ChatState();
 }
 
 class _ChatState extends State<Chat> {
   final TextEditingController textEditingController = new TextEditingController();
-  String groupChatId;
+  final ScrollController listScrollController = new ScrollController();
+  var listmessages;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,7 +28,8 @@ class _ChatState extends State<Chat> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-                  // buildListMessage(),
+
+                  buildListMessage(),
                   buildInput(),
                 ],
               )
@@ -70,29 +76,101 @@ class _ChatState extends State<Chat> {
   
     if (content.trim() != '') {
       textEditingController.clear();
-
       var documentReference = Firestore.instance
           .collection('messages')
-          .document(groupChatId)
-          .collection(groupChatId)
+          .document(widget.groupId)
+          .collection(widget.groupId)
           .document(DateTime.now().millisecondsSinceEpoch.toString());
 
       Firestore.instance.runTransaction((transaction) async {
         await transaction.set(
           documentReference,
           {
-            'idFrom': someMethod(),
-            // 'idTo': peerId,
+            'idFrom': widget.userId,
+            'idTo': widget.peerId,
             'timestamp': DateTime.now().millisecondsSinceEpoch.toString(),
             'content': content,
-            'type': type
           },
         );
       }); 
+      listScrollController.animateTo(0.0, duration: Duration(milliseconds: 300), curve: Curves.easeOut);
     }
   }
-  someMethod() async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  return user.uid;
-   } 
+    Widget buildListMessage() {
+    return Flexible(
+      child: widget.groupId == ''
+          ? Center(child: Text("No messages"))
+          : StreamBuilder(
+              stream: Firestore.instance
+                  .collection('messages')
+                  .document(widget.groupId)
+                  .collection(widget.groupId)
+                  .orderBy('timestamp', descending: true)
+                  .limit(20)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Center(
+                      child: Text('No Messages'));
+                } else {
+                  listmessages = snapshot.data.documents;
+                  return ListView.builder(
+                    padding: EdgeInsets.all(10.0),
+                    itemBuilder: (context, index) => buildItem(index, snapshot.data.documents[index]),
+                    itemCount: snapshot.data.documents.length,
+                    reverse: true,
+                    controller: listScrollController,
+                  );
+                }
+              },
+            ),
+    );
+  }
+
+    Widget buildItem(int index, DocumentSnapshot document) {
+    if (document['idFrom'] == widget.userId) {
+      // Right (my message)
+      return Row(
+        children: <Widget>[
+              Container(
+                  child: Text(
+                    document['content'],
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                  width: 200.0,
+                  decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(8.0)),
+                )
+        ],
+        mainAxisAlignment: MainAxisAlignment.end,
+      );
+    } else {
+      // Left (peer message)
+      return Container(
+        child: Column(
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Container(
+                        child: Text(
+                          document['content'],
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
+                        width: 200.0,
+                        decoration: BoxDecoration(color: Colors.blue, borderRadius: BorderRadius.circular(8.0)),
+                        margin: EdgeInsets.only(left: 10.0),
+                      )
+                    
+              ],
+            ),
+
+          ],
+          crossAxisAlignment: CrossAxisAlignment.start,
+        ),
+        margin: EdgeInsets.only(bottom: 10.0),
+      );
+    }
+  }
+
 }

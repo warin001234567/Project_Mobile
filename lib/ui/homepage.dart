@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'show.dart';
 
 class HomePage extends StatefulWidget {
@@ -10,8 +9,9 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-  String peerId;
+  String id;
+  String peer;
+  String groupchatId;
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -53,8 +53,19 @@ class _HomePageState extends State<HomePage> {
                 MaterialPageRoute(
                     builder: (context) => Chat(
                         )));
-                    print(data.elementAt(index).data['uid'].hashCode);
-                    someMethod();               
+
+                    id = data.elementAt(index).data['uid'];
+
+                    someMethod().then((value){
+                      if (id.hashCode <= value.hashCode) {
+                          groupchatId = '$id-$value';
+                        } else {
+                          groupchatId = '$value-$id';
+                        }
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
+                                                                                          peerId: id,
+                                                                                          userId: value,), ),);
+                    });
                 },
               ),
                 OutlineButton(
@@ -81,6 +92,8 @@ class _HomePageState extends State<HomePage> {
   }
   someMethod() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  print(user.uid.hashCode);
+  String id = user.uid;
+  print(id);
+  return id;
    } 
 }

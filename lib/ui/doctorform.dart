@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'services/usermanagement.dart';
+import '../services/usermanagement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorForm extends StatefulWidget {
@@ -103,7 +103,7 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'Department': department.text
                               }).then((value) {
                                 Navigator.of(context).pop();
-                                Navigator.of(context).pushReplacementNamed('/chat');
+                                Navigator.of(context).pushReplacementNamed('/homepage');
                               }).catchError((e) {
                                 print(e);
                               });
