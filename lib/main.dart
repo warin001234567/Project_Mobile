@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
        "/" :(context) => LoginScreen(),
        "/register": (context) => RegisterScreen(),
        '/homepage': (BuildContext context) => HomePage(),
-       "/show": (context) => Listuser(),
+       "/show": (context) => Chat(),
        "/add": (context) => Adddoctor(),
        "/chat": (context) => ChatWindow(),
         },

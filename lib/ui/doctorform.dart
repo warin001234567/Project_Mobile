@@ -94,14 +94,20 @@ class _DoctorFormState extends State<DoctorForm> {
                       child: Text("Register"),
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
-                            email: emailcontrol.text, password: passcontrol.text).then((signedInUser) {
-                          UserManagement().storeNewUserD(signedInUser, context);
-                          
-                          }).catchError((e) {
-                            print(e);
-                        });
-                    Firestore.instance.collection('/Doctor').add({
-                    'Name': name.text, 'Department' : department.text
+                            email: emailcontrol.text, password: passcontrol.text).then((user) {
+                              Firestore.instance.collection('/users').add({
+                                'email': user.email,
+                                'uid': user.uid,
+                                'role': "Doctor",
+                                'Name': name.text,
+                                'Department': department.text
+                              }).then((value) {
+                                Navigator.of(context).pop();
+                                Navigator.of(context).pushReplacementNamed('/chat');
+                              }).catchError((e) {
+                                print(e);
+                              });
+                        
     });
                   
                       },
