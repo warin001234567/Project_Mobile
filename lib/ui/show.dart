@@ -35,7 +35,7 @@ class _ChatState extends State<Chat> {
               )
             ],
           ), onWillPop: () {
-            Navigator.pushNamed(context, "/homepage");
+            Navigator.pushNamed(context, "/home");
           }, 
           
       ),
@@ -52,7 +52,7 @@ class _ChatState extends State<Chat> {
                 controller: textEditingController,
                 decoration: InputDecoration.collapsed(
                   hintText: 'Type your message...',
-                  hintStyle: TextStyle(color: Colors.white24),
+                  hintStyle: TextStyle(color: Colors.red),
                 ),
               ),
             ),
@@ -135,11 +135,11 @@ class _ChatState extends State<Chat> {
               Container(
                   child: Text(
                     document['content'],
-                    style: TextStyle(color: Colors.red),
+                    style: TextStyle(color: Colors.white),
                   ),
                   padding: EdgeInsets.fromLTRB(15.0, 10.0, 15.0, 10.0),
                   width: 200.0,
-                  decoration: BoxDecoration(color: Colors.grey, borderRadius: BorderRadius.circular(8.0)),
+                  decoration: BoxDecoration(color: Colors.black, borderRadius: BorderRadius.circular(8.0)),
                 )
         ],
         mainAxisAlignment: MainAxisAlignment.end,

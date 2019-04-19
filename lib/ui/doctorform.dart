@@ -1,6 +1,8 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../services/usermanagement.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class DoctorForm extends StatefulWidget {
@@ -16,7 +18,16 @@ class _DoctorFormState extends State<DoctorForm> {
   TextEditingController name =TextEditingController();
   TextEditingController department =TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
-
+  File sampleImage;
+ 
+  Future getImage() async {
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+ 
+    setState(() {
+      sampleImage = tempImage;
+    });
+  }
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,17 +42,10 @@ class _DoctorFormState extends State<DoctorForm> {
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.accessibility),
-                    onPressed: () {
-                      Firestore.instance.collection('/Doctor');
-                    },
+                  IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {
+                    getImage();
+                  },
                   ),
-                  IconButton(
-                    icon: Icon(Icons.pan_tool),
-                    onPressed: () {
-                      Firestore.instance.collection('/Pantial');
-                    },)
                 ],
               ),
               TextFormField(
@@ -100,10 +104,11 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'uid': user.uid,
                                 'role': "Doctor",
                                 'Name': name.text,
-                                'Department': department.text
+                                'Department': department.text,
+                                'photoUrl': 'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/myimage.jpg?alt=media&token=ef7440e0-9257-41e6-b61c-43ae01a54ea4'
                               }).then((value) {
                                 Navigator.of(context).pop();
-                                Navigator.of(context).pushReplacementNamed('/homepage');
+                                Navigator.of(context).pushReplacementNamed('/home');
                               }).catchError((e) {
                                 print(e);
                               });

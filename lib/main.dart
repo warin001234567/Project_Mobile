@@ -5,6 +5,7 @@ import './ui/homepage.dart';
 import './ui/show.dart';
 import './ui/add.dart';
 import './ui/chatdoctor.dart';
+import './ui/home.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -25,6 +26,7 @@ class MyApp extends StatelessWidget {
        "/show": (context) => Chat(),
        "/add": (context) => Adddoctor(),
        "/chat": (context) => ChatWindow(),
+       "/home": (context) => Home(),
         },
     );
   }
