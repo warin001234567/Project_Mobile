@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import '../services/usermanagement.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,75 +14,47 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  var profilePicUrl =
-      'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/myimage.jpg?alt=media&token=ef7440e0-9257-41e6-b61c-43ae01a54ea4';
-
-  var nickName = 'Tom';
-
+  var photoUrl ='';
   bool isLoading = false;
 
   File selectedImage;
 
   UserManagement userManagement = new UserManagement();
 
-  String newNickName;
-
   @override
   void initState() {
     super.initState();
-    FirebaseAuth.instance.currentUser().then((user) {
-      setState(() {
-        // profilePicUrl = user.photoUrl;
-      });
-    }).catchError((e) {
-      print(e);
-    });
+
   }
 
   Future selectPhoto() async {
-    setState(() {
-      isLoading = true;
-    });
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
     setState(() {
       selectedImage = tempImage;
-      // uploadImage();
+      uploadImage();
     });
   }
 
-  // Future uploadImage() async {
-  //   var randomno = Random(25);
-  //   final StorageReference firebaseStorageRef = FirebaseStorage.instance
-  //       .ref()
-  //       .child('profilepics/${randomno.nextInt(5000).toString()}.jpg');
-  //   StorageUploadTask task = firebaseStorageRef.putFile(selectedImage);
-
-  //   task.future.then((value) {
-  //     setState(() {
-  //       userManagement
-  //           .updateProfilePic(value.downloadUrl.toString())
-  //           .then((val) {
-  //         setState(() {
-  //           profilePicUrl = value.downloadUrl.toString();
-  //           isLoading = false;
-  //         });
-  //       });
-  //     });
-  //   }).catchError((e) {
-  //     print(e);
-  //   });
-  // }
-
-  getLoader() {
-    return isLoading
-        ? Column(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              CircularProgressIndicator(),
-            ],
-          )
-        : Container();
+  Future uploadImage() async {
+    someMethod().then((id){
+    String fileName = id;
+    StorageReference reference = FirebaseStorage.instance.ref().child(fileName);
+    StorageUploadTask uploadTask = reference.putFile(selectedImage);
+    StorageTaskSnapshot storageTaskSnapshot;
+    uploadTask.onComplete.then((value) {
+      if (value.error == null) {
+        storageTaskSnapshot = value;
+        storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
+          photoUrl = downloadUrl;
+          Firestore.instance
+              .collection('users')
+              .document(id)
+              .updateData({'photoUrl': photoUrl});
+          });
+        }
+      }); 
+    });       
   }
 
   @override
@@ -103,14 +75,13 @@ class _ProfileState extends State<Profile> {
                     decoration: BoxDecoration(
                         color: Colors.red,
                         image: DecorationImage(
-                            image: NetworkImage(profilePicUrl),
+                            image: NetworkImage(photoUrl),
                             fit: BoxFit.cover),
                         borderRadius: BorderRadius.all(Radius.circular(75.0)),
                         boxShadow: [
                           BoxShadow(blurRadius: 7.0, color: Colors.black)
                         ])),
                 SizedBox(height: 20.0),
-                getLoader(),
                 SizedBox(height: 65.0),
                 Text(
                   "YA",
@@ -158,4 +129,9 @@ class _ProfileState extends State<Profile> {
       ],
     ));
   }
+    someMethod() async {
+  FirebaseUser user = await FirebaseAuth.instance.currentUser();
+  String id = user.uid;
+  return id;
+   } 
 }
