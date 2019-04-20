@@ -96,6 +96,8 @@ class _HomePageState extends State<HomePage> {
                           groupchatId = '$value-$id';
                         }
                         print(groupchatId);
+                        print(value);
+                        print(id);
                       Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
                                                                                           peerId: id,
                                                                                           userId: value,), ),);
@@ -113,7 +115,6 @@ class _HomePageState extends State<HomePage> {
   someMethod() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String id = user.uid;
-  print(id);
   return id;
    } 
 }

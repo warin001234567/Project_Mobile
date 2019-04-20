@@ -32,7 +32,7 @@ class _ProfileState extends State<Profile> {
     super.initState();
     FirebaseAuth.instance.currentUser().then((user) {
       setState(() {
-        profilePicUrl = user.photoUrl;
+        // profilePicUrl = user.photoUrl;
       });
     }).catchError((e) {
       print(e);

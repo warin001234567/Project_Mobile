@@ -18,7 +18,7 @@ class UserManagement {
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){
           print(dosc.documents[0].data['uid']);
-          // Navigator.pushNamed(context, "/home");
+          Navigator.push(context,MaterialPageRoute(builder: (context) => HomePage(), ),);
         }
         }
       });

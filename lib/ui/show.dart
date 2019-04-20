@@ -76,6 +76,9 @@ class _ChatState extends State<Chat> {
   
     if (content.trim() != '') {
       textEditingController.clear();
+      print(widget.groupId);
+      print(widget.peerId);
+      print(widget.userId);
       var documentReference = Firestore.instance
           .collection('messages')
           .document(widget.groupId)
