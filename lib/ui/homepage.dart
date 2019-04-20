@@ -20,7 +20,7 @@ class _HomePageState extends State<HomePage> {
           centerTitle: true,
           actions: <Widget>[
             IconButton(
-              icon: new Icon(Icons.offline_bolt),
+              icon: new Icon(Icons.settings_power),
               onPressed: (){
                     FirebaseAuth.instance.signOut().then((value) {
                       Navigator
