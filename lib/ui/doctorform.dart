@@ -99,22 +99,20 @@ class _DoctorFormState extends State<DoctorForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((user) {
-                              Firestore.instance.collection('/users').add({
+                              Firestore.instance.collection('/users').document(user.uid).setData({
                                 'email': user.email,
                                 'uid': user.uid,
                                 'role': "Doctor",
                                 'Name': name.text,
                                 'Department': department.text,
-                                'photoUrl': 'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/myimage.jpg?alt=media&token=ef7440e0-9257-41e6-b61c-43ae01a54ea4'
+                                'Photourl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                               }).then((value) {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pushReplacementNamed('/home');
                               }).catchError((e) {
                                 print(e);
-                              });
-                        
-    });
-                  
+                              });                                           
+                        });                  
                       },
                     ),
                   ),
@@ -127,3 +125,4 @@ class _DoctorFormState extends State<DoctorForm> {
     );
   }
 }
+

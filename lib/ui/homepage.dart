@@ -18,61 +18,10 @@ class _HomePageState extends State<HomePage> {
         appBar: new AppBar(
           title: new Text('Main'),
           centerTitle: true,
-        ),
-        body: Center(
-          child: Container(
-            child: StreamBuilder(
-              stream: Firestore.instance.collection('/users').snapshots(),
-              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot){
-                if(!snapshot.hasData){
-                  return CircularProgressIndicator();
-                }else{
-                  return buildList(snapshot.data.documents);
-                }
-              },
-            )
-            ),
-          ),
-        );
-  }
-  Widget buildList(List<DocumentSnapshot> data) {
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index) {
-        return Container(
-          child: Column(
-            children: <Widget>[
-                FlatButton(
-                  child: ListTile(
-                    title: data.elementAt(index).data['role'] == "Doctor" ? Text(data.elementAt(index).data['Name']):Text("None"),
-                    subtitle: data.elementAt(index).data['role'] == "Doctor" ? Text(data.elementAt(index).data['Department']):Text("None"),
-                    ),
-                  onPressed: (){
-                                Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => Chat(
-                        )));
-
-                    id = data.elementAt(index).data['uid'];
-
-                    someMethod().then((value){
-                      if (id.hashCode <= value.hashCode) {
-                          groupchatId = '$id-$value';
-                        } else {
-                          groupchatId = '$value-$id';
-                        }
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
-                                                                                          peerId: id,
-                                                                                          userId: value,), ),);
-                    });
-                },
-              ),
-                OutlineButton(
-                  borderSide: BorderSide(
-                      color: Colors.red, style: BorderStyle.solid, width: 3.0),
-                  child: Text('Logout'),
-                  onPressed: () {
+          actions: <Widget>[
+            IconButton(
+              icon: new Icon(Icons.offline_bolt),
+              onPressed: (){
                     FirebaseAuth.instance.signOut().then((value) {
                       Navigator
                           .of(context)
@@ -80,16 +29,87 @@ class _HomePageState extends State<HomePage> {
                     }).catchError((e) {
                       print(e);
                     });
-                  },
-                ),
-            ],
-            
+              }
+            ),
+          ],
+        ),
+        body: Center(
+          child:Container(
+              child: StreamBuilder(
+                stream: Firestore.instance.collection('users').snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return Text("No data");
+                  } else {
+                    return ListView.builder(
+                      padding: EdgeInsets.all(10.0),
+                      itemBuilder: (context, index) => buildList(context, snapshot.data.documents[index]),
+                      itemCount: snapshot.data.documents.length,
+                    );
+                  }
+                },
+              ),
+            ),
           ),
-
         );
-      },
-    );
   }
+  Widget buildList(BuildContext context, DocumentSnapshot document) {
+      return Container(
+        child: document['role'] != 'Doctor' ? Text(" ")
+        :FlatButton(
+          child: Row(
+            children: <Widget>[
+              Flexible(
+                child: Container(
+                  child: Column(
+                    children: <Widget>[
+                      Container(
+                        child: Text(
+                          'Nickname: ${document['Name']}',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                      ),
+                      Container(
+                        child: Text(
+                          'About me: ${document['Department'] ?? 'Not available'}',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        alignment: Alignment.centerLeft,
+                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                      )
+                    ],
+                  ),
+                  margin: EdgeInsets.only(left: 20.0),
+                ),
+              ),
+            ],
+          ),
+          onPressed: () {
+                    id = document['uid'];
+                    
+                    someMethod().then((value){
+                      if (id.hashCode <= value.hashCode) {
+                          groupchatId = '$id-$value';
+                        } else {
+                          groupchatId = '$value-$id';
+                        }
+                        print(groupchatId);
+                      Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
+                                                                                          peerId: id,
+                                                                                          userId: value,), ),);
+                    });                                                                    
+          },
+          color: Colors.blueAccent,
+          padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        ),
+        margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
+      );
+    
+  }
+
   someMethod() async {
   FirebaseUser user = await FirebaseAuth.instance.currentUser();
   String id = user.uid;

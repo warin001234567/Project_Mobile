@@ -93,7 +93,7 @@ class _PatientFormState extends State<PatientForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((user) {
-                              Firestore.instance.collection('/users').add({
+                              Firestore.instance.collection('/users').document(user.uid).setData({
                                 'email': user.email,
                                 'uid': user.uid,
                                 'role': "Patient",
@@ -105,10 +105,8 @@ class _PatientFormState extends State<PatientForm> {
                                 Navigator.of(context).pushReplacementNamed('/home');
                               }).catchError((e) {
                                 print(e);
-                              });                   
-                          }).catchError((e) {
-                            print(e);
-                        });
+                              });                                           
+                        });  
                       },
                     ),
                   ),
