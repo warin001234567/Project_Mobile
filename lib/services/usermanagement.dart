@@ -2,8 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import '../ui/homepage.dart';
 import '../ui/home.dart';
+import '../ui/maindoctor.dart';
+import '../ui/homedoctor.dart';
 
  
 class UserManagement {
@@ -15,7 +16,7 @@ class UserManagement {
         if(dosc.documents[0].exists){
         if(dosc.documents[0].data['role'] == 'Doctor'){
           print(dosc.documents[0].data['uid']);
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home(), ),);
+          Navigator.push(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){
           print(dosc.documents[0].data['uid']);

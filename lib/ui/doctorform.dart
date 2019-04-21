@@ -17,6 +17,7 @@ class _DoctorFormState extends State<DoctorForm> {
   TextEditingController passconfcontrol =TextEditingController();
   TextEditingController name =TextEditingController();
   TextEditingController department =TextEditingController();
+  TextEditingController limit = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
   File sampleImage;
  
@@ -34,19 +35,18 @@ class _DoctorFormState extends State<DoctorForm> {
       appBar: AppBar(
         title: Text("Register New Account"),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(18),
+      body: WillPopScope(
         child: Form(
           key: _formkey,
           child: Column(
             children: <Widget>[
               Row(
-                children: <Widget>[
-                  IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {
-                    getImage();
-                  },
-                  ),
-                ],
+                // children: <Widget>[
+                //   IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {
+                //     getImage();
+                //   },
+                //   ),
+                // ],
               ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Email"),
@@ -83,6 +83,11 @@ class _DoctorFormState extends State<DoctorForm> {
                 }
               ),
               TextFormField(
+                decoration:InputDecoration(labelText: "Limit patient"),
+
+                controller: limit,
+              ),
+              TextFormField(
                 decoration:InputDecoration(labelText: "Department"),
 
                 controller: department,
@@ -99,16 +104,20 @@ class _DoctorFormState extends State<DoctorForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((user) {
+                              
                               Firestore.instance.collection('/users').document(user.uid).setData({
                                 'email': user.email,
                                 'uid': user.uid,
                                 'role': "Doctor",
                                 'Name': name.text,
                                 'Department': department.text,
+                                'user limit': limit.text,
+                                'status': "online",
+                                'groupPatient': "has"+user.uid,
                                 'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                               }).then((value) {
                                 Navigator.of(context).pop();
-                                Navigator.of(context).pushReplacementNamed('/home');
+                                Navigator.of(context).pushReplacementNamed('/');
                               }).catchError((e) {
                                 print(e);
                               });                                           
@@ -120,7 +129,9 @@ class _DoctorFormState extends State<DoctorForm> {
               ),
             ],
           ),
-        )
+        ), onWillPop: () {
+          Navigator.pushNamed(context, "/register");
+        },
       ),
     );
   }

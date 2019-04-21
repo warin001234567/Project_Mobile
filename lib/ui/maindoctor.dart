@@ -2,15 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'show.dart';
 
-class HomePage extends StatefulWidget {
+class MainDoctor extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _MainDoctorState createState() => _MainDoctorState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MainDoctorState extends State<MainDoctor> {
   String id;
   String peer;
   String groupchatId;
@@ -58,8 +57,9 @@ class _HomePageState extends State<HomePage> {
   }
   Widget buildList(BuildContext context, DocumentSnapshot document) {
       return Container(
-        child: document['role'] != 'Doctor' ? Container()
-        :FlatButton(
+        child: document['role'] != 'Patient' ? Container()
+        :document['grouppatient'] == document['have'] ?
+        FlatButton(
           child: Row(
             children: <Widget>[
               Material(
@@ -117,13 +117,16 @@ class _HomePageState extends State<HomePage> {
           ),
           onPressed: () {
                     id = document['uid'];
-                    checked = document['role'];
+                    checked = document['check'];
                     someMethod().then((value){
                       if (id.hashCode <= value.hashCode) {
                           groupchatId = '$id-$value';
                         } else {
                           groupchatId = '$value-$id';
                         }
+                        print(groupchatId);
+                        print(value);
+                        print(id);
                       Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
                                                                                           peerId: id,
                                                                                           userId: value,
@@ -133,7 +136,8 @@ class _HomePageState extends State<HomePage> {
           color: Colors.blueAccent,
           padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        ),
+        )
+        :Container(),
         margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
       );
     

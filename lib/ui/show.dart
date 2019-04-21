@@ -8,12 +8,14 @@ class Chat extends StatefulWidget {
   final String groupId;
   final String peerId;
   final String userId;
-  Chat({Key key, this.groupId,this.peerId,this.userId}) : super(key:key);
+  final String check;
+  Chat({Key key, this.groupId,this.peerId,this.userId,this.check}) : super(key:key);
   @override
   _ChatState createState() => _ChatState();
 }
 
 class _ChatState extends State<Chat> {
+  int count = 0;
   final TextEditingController textEditingController = new TextEditingController();
   final ScrollController listScrollController = new ScrollController();
   var listmessages;
@@ -28,14 +30,14 @@ class _ChatState extends State<Chat> {
             children: <Widget>[
               Column(
                 children: <Widget>[
-
+                  
                   buildListMessage(),
                   buildInput(),
                 ],
               )
             ],
           ), onWillPop: () {
-            Navigator.pushNamed(context, "/home");
+            Navigator.pop(context);
           }, 
           
       ),
@@ -76,15 +78,20 @@ class _ChatState extends State<Chat> {
   
     if (content.trim() != '') {
       textEditingController.clear();
-      print(widget.groupId);
-      print(widget.peerId);
-      print(widget.userId);
       var documentReference = Firestore.instance
           .collection('messages')
           .document(widget.groupId)
           .collection(widget.groupId)
           .document(DateTime.now().millisecondsSinceEpoch.toString());
-
+          print(widget.check);
+          if(widget.check == 'false'){
+            print(widget.check);
+            count +=1;
+          Firestore.instance.collection('users').document(widget.userId).updateData({
+            'Have': "has"+widget.peerId,
+            'check': 'true',
+            });
+          }
       Firestore.instance.runTransaction((transaction) async {
         await transaction.set(
           documentReference,

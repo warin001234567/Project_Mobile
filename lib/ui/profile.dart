@@ -33,6 +33,7 @@ class _ProfileState extends State<Profile> {
     setState(() {
       selectedImage = tempImage;
       uploadImage();
+      
     });
   }
 
@@ -47,10 +48,14 @@ class _ProfileState extends State<Profile> {
         storageTaskSnapshot = value;
         storageTaskSnapshot.ref.getDownloadURL().then((downloadUrl) {
           photoUrl = downloadUrl;
+          print(photoUrl);
           Firestore.instance
               .collection('users')
               .document(id)
               .updateData({'photoUrl': photoUrl});
+              setState(() {
+               photoUrl = downloadUrl; 
+              });
           });
         }
       }); 

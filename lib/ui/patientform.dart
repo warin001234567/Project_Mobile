@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../services/usermanagement.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PatientForm extends StatefulWidget {
   @override
@@ -98,11 +99,12 @@ class _PatientFormState extends State<PatientForm> {
                                 'uid': user.uid,
                                 'role': "Patient",
                                 'Name': name.text,
+                                'check': 'false',
                                 'Symptom': symptom.text,
-                                'Photourl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
-                              }).then((value) {
+                                'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
+                              }).then((value) { 
                                 Navigator.of(context).pop();
-                                Navigator.of(context).pushReplacementNamed('/home');
+                                Navigator.of(context).pushReplacementNamed('/');
                               }).catchError((e) {
                                 print(e);
                               });                                           
