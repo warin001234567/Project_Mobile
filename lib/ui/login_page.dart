@@ -17,59 +17,103 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.all(18),
+        padding: EdgeInsets.only(top: 80),
+        
         child: Form(
           child: Column(
-            children: <Widget>[
-              TextFormField(
-                decoration: InputDecoration(labelText: "Email"),
-                controller: emailcontroller,
-                keyboardType: TextInputType.emailAddress,
-                validator: (value){
-                  if(value.isEmpty) return "Email is required";
-                }
-              ),
-              TextFormField(
-                decoration:InputDecoration(labelText: "Password"),
-                controller: passwordcontroller,
-                obscureText: true,
-                validator: (value){
-                  if(value.isEmpty) return "Password is required";
-                }
-              ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: RaisedButton(
-                      child: Text("Signin"),
-                      onPressed: (){
-                        _auth.signInWithEmailAndPassword(
-                          email: emailcontroller.text,
-                          password: passwordcontroller.text,
-                        ).then((FirebaseUser user) async {
-                          if(user.isEmailVerified){
-                            print("Go to home screen");
-                          }else{
-                            UserManagement().authorizeAccess(context);
-                          }
-                        });
-                      },
-                    ),
+              children: <Widget>[
+                Text(
+                  'SIGN IN',
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.blueGrey
                   ),
-                  FlatButton(
-                    child: Text("Register new account"),
+                  ),
+                Padding(
+                  padding: EdgeInsets.only(top: 40,left: 40,right: 40),
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        decoration: InputDecoration(
+                          labelText: "Username",
+                          labelStyle: TextStyle(
+                            fontSize: 11
+                          )
+                          ),
+                        controller: emailcontroller,
+                        keyboardType: TextInputType.emailAddress,
+                        validator: (value){
+                          if(value.isEmpty) return "Email is required";
+                        }
+                      ),
+                      TextFormField(
+                        decoration:InputDecoration(
+                          labelText: "Password",
+                          labelStyle: TextStyle(
+                            fontSize: 11
+                          )
+                          ),
+                        controller: passwordcontroller,
+                        obscureText: true,
+                        validator: (value){
+                          if(value.isEmpty) return "Password is required";
+                        }
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(right: 23),
+                  child: FlatButton(
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Text(
+                        "Forgot password?",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: Colors.blue,
+                          fontSize: 11
+                        ),
+                      ),
+                    ),
                     onPressed: (){
-                      
-                      Navigator.pushNamed(context, "/register");
+
                     },
                   )
-                ],
-              ),
-            ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 20,left: 40,right: 40),
+
+                  child: SizedBox(
+                    height: 40,
+                    child: RawMaterialButton(
+                    fillColor: Colors.blueGrey,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          "Login",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15
+                            
+                          ),
+                        ),
+                      ],
+                      ),
+                    shape: StadiumBorder(),
+                    onPressed: (){
+
+                    },
+                  ),
+                  ),
+                  )
+              ],
           ),
-        )
-      ),
+        ),
+      )
     );
   }
 }
