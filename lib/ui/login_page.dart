@@ -188,7 +188,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           )
                       ],
                     ),
-                    )
+                    ),
+                    Padding(
+                      padding: EdgeInsets.only(top: 20),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            Text(
+                              "Don't have an account?",
+                              style: TextStyle(
+                                fontFamily: "Quicksand",
+                                fontSize: 11,
+                              ),
+                              ),
+                              FlatButton(
+                                child: Text(
+                                  "sing up",
+                                  style: TextStyle(
+                                    fontFamily: "Quicksand",
+                                    fontSize: 11,
+                                    color: Colors.blue
+                                    
+                                  ),
+                                ),
+                                onPressed: (){
+
+                                },
+                                )
+                          ],
+                        ),
+                    ),
               ],
           ),
         ),
