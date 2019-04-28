@@ -25,13 +25,13 @@ class _LoginScreenState extends State<LoginScreen> {
                 Text(
                   'SIGN IN',
                   style: TextStyle(
-                    fontSize: 30,
-                    fontWeight: FontWeight.bold,
+                    fontFamily: 'Quicksand Bold',
+                    fontSize: 35,
                     color: Colors.blueGrey
                   ),
                   ),
                 Padding(
-                  padding: EdgeInsets.only(top: 40,left: 40,right: 40),
+                  padding: EdgeInsets.only(top: 35,left: 40,right: 40),
                   child: Column(
                     children: <Widget>[
                       TextFormField(
@@ -109,7 +109,86 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   ),
-                  )
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 30),
+                    child: Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Container(
+                        margin: EdgeInsets.only(left: 30.0, right: 20.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 36,
+                    )),
+                      ),
+                      Text("or via"),
+                      Expanded(
+                        child: Container(
+                        margin: EdgeInsets.only(left: 20.0, right: 30.0),
+                        child: Divider(
+                          color: Colors.black,
+                          height: 36,
+                    )),
+                      )
+                    ],
+                  ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Row(
+                      children: <Widget>[
+                        Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 30, right: 20),
+                            child: RawMaterialButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.face),
+                                  Padding(padding: EdgeInsets.only(right: 10),),
+                                  Text("facebook",
+                                  style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 12
+                                  ),)
+                                ],
+                              ),
+                              shape: StadiumBorder(
+                                side: BorderSide(
+                                  width: 0.5
+                                )
+                              ),
+                            ),
+                          ),
+                          ),
+                          Expanded(
+                          child: Container(
+                            margin: EdgeInsets.only(left: 20, right: 30),
+                            child: RawMaterialButton(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Icon(Icons.face),
+                                  Padding(padding: EdgeInsets.only(right: 10),),
+                                  Text("facebook",
+                                  style: TextStyle(
+                                    fontFamily: 'Quicksand',
+                                    fontSize: 12
+                                  ),)
+                                ],
+                              ),
+                              shape: StadiumBorder(
+                                side: BorderSide(
+                                  width: 0.5
+                                )
+                              ),
+                            ),
+                          ),
+                          )
+                      ],
+                    ),
+                    )
               ],
           ),
         ),
