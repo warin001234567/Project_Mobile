@@ -104,7 +104,16 @@ class _DoctorFormState extends State<DoctorForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((user) {
-                              
+                              Firestore.instance.collection('Doctor').document(user.uid).setData({
+                                'email': user.email,
+                                'uid': user.uid,
+                                'role': "Doctor",
+                                'Name': name.text,
+                                'Department': department.text,
+                                'user limit': limit.text,
+                                'status': "online",
+                                'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
+                              });
                               Firestore.instance.collection('/users').document(user.uid).setData({
                                 'email': user.email,
                                 'uid': user.uid,
@@ -113,7 +122,6 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'Department': department.text,
                                 'user limit': limit.text,
                                 'status': "online",
-                                'groupPatient': "has"+user.uid,
                                 'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                               }).then((value) {
                                 Navigator.of(context).pop();

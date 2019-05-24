@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_mobile/ui/add.dart';
 import 'homepage.dart';
 import 'profile.dart';
 class Home extends StatefulWidget{
@@ -11,9 +12,11 @@ class Home extends StatefulWidget{
 class HomeState extends State<Home> {
   int _currentIndex = 0;
   final List<Widget> _home = [
-    HomePage(),Profile()
+    Adddoctor(),Profile()
   ];
     bool showDialog = false;
+
+
 
   @override
   Widget build(BuildContext context){

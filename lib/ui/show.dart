@@ -83,15 +83,14 @@ class _ChatState extends State<Chat> {
           .document(widget.groupId)
           .collection(widget.groupId)
           .document(DateTime.now().millisecondsSinceEpoch.toString());
-          print(widget.check);
-          if(widget.check == 'false'){
-            print(widget.check);
-            count +=1;
-          Firestore.instance.collection('users').document(widget.userId).updateData({
-            'Have': "has"+widget.peerId,
-            'check': 'true',
-            });
-          }
+          // if(widget.check == 'false'){
+          //   print(widget.check);
+          //   count +=1;
+          // Firestore.instance.collection('users').document(widget.userId).updateData({
+          //   'Have': "has"+widget.peerId,
+          //   'check': 'true',
+          //   });
+          // }
       Firestore.instance.runTransaction((transaction) async {
         await transaction.set(
           documentReference,

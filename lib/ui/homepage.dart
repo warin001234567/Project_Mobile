@@ -100,14 +100,6 @@ class _HomePageState extends State<HomePage> {
                         alignment: Alignment.centerLeft,
                         margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                       ),
-                      Container(
-                        child: Text(
-                          'limit: ${document['status'] ?? 'unlimited'}',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                      )
                     ],
                   ),
                   margin: EdgeInsets.only(left: 20.0),
@@ -117,7 +109,6 @@ class _HomePageState extends State<HomePage> {
           ),
           onPressed: () {
                     id = document['uid'];
-                    checked = document['role'];
                     someMethod().then((value){
                       if (id.hashCode <= value.hashCode) {
                           groupchatId = '$id-$value';
