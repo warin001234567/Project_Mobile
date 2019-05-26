@@ -28,7 +28,6 @@ class MainPatientState extends State<MainPatient> {
     setState(() {});
   }
 
-
   String groupchatId;
   String checked;
   @override
@@ -53,7 +52,35 @@ class MainPatientState extends State<MainPatient> {
       ),
       body: Center(
         child: Container(
-          child: StreamBuilder(
+          child: ListView(children: <Widget>[
+            StreamBuilder(
+            stream: Firestore.instance.collection('Doctor').where('uid', isEqualTo: prefs.getString('check')).snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                return ExpansionTile(title: Text("Consult Doctor"),
+                 children: <Widget>[
+                  ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    if(snapshot.data.documents[index].data['uid'] == prefs.getString('check')){
+                      return Container(
+                        child:
+                          buildList(context, snapshot.data.documents[index])
+                      );
+                    }
+                  },
+                  itemCount: snapshot.data.documents.length,
+                )
+                ],);
+              }
+            },
+          ),
+          ExpansionTile(title: Text('All doctor'),
+          children: <Widget>[
+            StreamBuilder(
             stream: Firestore.instance.collection('Doctor').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -61,13 +88,20 @@ class MainPatientState extends State<MainPatient> {
               } else {
                 return ListView.builder(
                   padding: EdgeInsets.all(10.0),
-                  itemBuilder: (context, index) =>
-                      buildList(context, snapshot.data.documents[index]),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                      return Container(
+                          child: buildList(context, snapshot.data.documents[index])
+                      );
+                  },
                   itemCount: snapshot.data.documents.length,
                 );
               }
             },
           ),
+          ],)
+          
+          ],)
         ),
       ),
     );
@@ -142,52 +176,61 @@ class MainPatientState extends State<MainPatient> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Alert Dialog title"),
-          content: new Text("Alert Dialog body"),
+          title: new Text("Do you want to talk with this doctor?"),
+          content: new Text("Please submit your answer"),
           actions: <Widget>[
             FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
                 print(limit);
-                print(int.parse(limit)-1);
+                print(int.parse(limit) - 1);
                 if (id.hashCode <= peerid.hashCode) {
                   groupchatId = '$id-$peerid';
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if (check == 'false' && int.parse(limit) > 0) {
-                                  Firestore.instance
-                    .collection('users')
-                    .document(id)
-                    .updateData({'check': 'true' + peerid});
-                Firestore.instance
-                    .collection('Doctor')
-                    .document(peerid)
-                    .updateData({'limit': (int.parse(limit)-1).toString()});
-                  prefs = await SharedPreferences.getInstance();
-                  prefs.setString('check', 'true' + peerid);
-                  check = prefs.getString('check');
+                if ((check == peerid || check == '') && int.parse(limit) >= 0) {
+                  if (check == '') {
+                    Firestore.instance
+                        .collection('Patient')
+                        .document(id)
+                        .updateData({'check': peerid});
+                    Firestore.instance
+                        .collection('Doctor')
+                        .document(peerid)
+                        .updateData(
+                            {'limit': (int.parse(limit) - 1).toString()});
+                    prefs = await SharedPreferences.getInstance();
+                    prefs.setString('check', peerid);
+                    check = prefs.getString('check');
+                  }
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Chat(
-                          groupId: groupchatId,
-                          peerId: peerid,
-                          userId: id),
+                          groupId: groupchatId, peerId: peerid, userId: id),
                     ),
                   );
-                } else if (check == 'true' + peerid && int.parse(limit) >= 0) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Chat(
-                          groupId: groupchatId,
-                          peerId: peerid,
-                          userId: id),
-                    ),
+                } else {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (context){
+                      return AlertDialog(
+                    title: Text('Error'),
+                    content: Text('You have another consult.'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Close'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
                   );
-                } else{
-                  return print("ya kung za kub");
+                    }
+                  );
                 }
               },
             ),

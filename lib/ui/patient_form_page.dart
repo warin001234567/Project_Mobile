@@ -21,42 +21,49 @@ class _PatientFormState extends State<PatientForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Padding(
-          padding: EdgeInsets.all(18),
-          child: Form(
+      body: Form(
               key: _formkey,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35, left: 20, right: 20),
-                child: Column(
+              child: SingleChildScrollView(
+                child:Padding(
+                  padding: EdgeInsets.only(top: 35, left: 15, right: 15),
+                  child: Column(
                   children: <Widget>[
-                    Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                          fontFamily: 'Quicksand Bold',
-                          fontSize: 35,
-                          color: Colors.blueGrey),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(
+                              Icons.chevron_left,
+                              color: Colors.grey,
+                            ),
+                            onPressed: (){
+                            Navigator.pop(context);
+                            },
+                        ),
+                      ]
                     ),
-                    // Row(
-                    //   children: <Widget>[
-                    //     IconButton(
-                    //       icon: Icon(Icons.accessibility),
-                    //       onPressed: () {
-                    //         Firestore.instance.collection('/Doctor');
-                    //       },
-                    //     ),
-                    //     IconButton(
-                    //       icon: Icon(Icons.pan_tool),
-                    //       onPressed: () {
-                    //         Firestore.instance.collection('/Pantial');
-                    //       },)
-                    //   ],
-                    // ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 25, right: 25),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                         Text(
+                            'SIGN UP',
+                            style: TextStyle(
+                            fontFamily: 'Quicksand Bold',
+                            fontSize: 35,
+                            color: Color.fromRGBO(125, 145, 193, 1)),
+                          ),
+                      ],
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: TextFormField(
                         decoration: InputDecoration(
                             labelText: "Email",
-                            labelStyle: TextStyle(fontSize: 11)),
+                            labelStyle: TextStyle(fontSize: 10)),
                         controller: emailcontrol,
                         keyboardType: TextInputType.emailAddress,
                         validator: (value) {
@@ -68,7 +75,7 @@ class _PatientFormState extends State<PatientForm> {
                       child: TextFormField(
                         decoration: InputDecoration(
                             labelText: "Password",
-                            labelStyle: TextStyle(fontSize: 11)),
+                            labelStyle: TextStyle(fontSize: 10)),
                         obscureText: true,
                         controller: passcontrol,
                         validator: (value) {
@@ -82,8 +89,8 @@ class _PatientFormState extends State<PatientForm> {
                       padding: EdgeInsets.only(top: 15),
                       child: TextFormField(
                         decoration: InputDecoration(
-                            labelText: "Password",
-                            labelStyle: TextStyle(fontSize: 11)),
+                            labelText: "Confrim Password",
+                            labelStyle: TextStyle(fontSize: 10)),
                         obscureText: true,
                         controller: passconfcontrol,
                         validator: (value) {
@@ -98,7 +105,7 @@ class _PatientFormState extends State<PatientForm> {
                       child: TextFormField(
                         decoration: InputDecoration(
                             labelText: "Name",
-                            labelStyle: TextStyle(fontSize: 11)),
+                            labelStyle: TextStyle(fontSize: 10)),
                         controller: name,
                         validator: (value) {
                           if (value.isEmpty) return "Name is required";
@@ -109,19 +116,26 @@ class _PatientFormState extends State<PatientForm> {
                       child: TextFormField(
                         decoration: InputDecoration(
                             labelText: "Symptom",
-                            labelStyle: TextStyle(fontSize: 11)),
+                            labelStyle: TextStyle(fontSize: 10)),
                         controller: symptom,
                         validator: (value) {
                           if (value.isEmpty) return "Symptom is required";
                         }),
-                    ),                    
+                    ),                   
                     Padding(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: EdgeInsets.only(top: 35,bottom: 15),
                       child:  CustomButton(
                         text: 'Register',
                         height: 40,
+                        gradient: LinearGradient(
+                        colors: <Color>[Color.fromRGBO(200, 219, 241, 1), Color.fromRGBO(169, 201, 239, 1)],
+                        begin: FractionalOffset(0, 0),
+                        end: FractionalOffset(0.6, 0),
+                        stops: [0.0, 1.0],
+                      ),
                         onPressed: (){
-                          auth
+                          if(_formkey.currentState.validate()){
+                            auth
                                   .createUserWithEmailAndPassword(
                                       email: emailcontrol.text,
                                       password: passcontrol.text)
@@ -146,12 +160,18 @@ class _PatientFormState extends State<PatientForm> {
                                   print(e);
                                 });
                               });
+                          }
                         },
                       )
+                    )
+                        ],
+                      )
+                    ),
+                    
+                  ],),
                 )
-                  ],
-                ),
-              ))),
+              )
+          )
     );
   }
 }

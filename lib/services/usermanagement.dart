@@ -12,7 +12,7 @@ class UserManagement {
   Future authorizeAccess(BuildContext context) async {
     SharedPreferences prefs;
     FirebaseAuth.instance.currentUser().then((user){
-      Firestore.instance.collection('/users')
+      Firestore.instance.collection('Patient')
       .where('uid',isEqualTo:user.uid).getDocuments()
       .then((dosc) async {
         if(dosc.documents[0].exists){
@@ -20,7 +20,7 @@ class UserManagement {
           // if(dosc.documents[0].data['isValidated'] == 'true'){
 
           // }
-          Navigator.push(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){
           print(dosc.documents[0].data['uid']);
@@ -28,11 +28,12 @@ class UserManagement {
           await prefs.setString('id', dosc.documents[0].data['uid']);
           await prefs.setString('name', dosc.documents[0].data['Name']);
           await prefs.setString('check', dosc.documents[0].data['check']);
+          await prefs.setString('role', dosc.documents[0].data['role']);
           await prefs.setString('photoUrl', dosc.documents[0].data['photoUrl']);
           print(prefs.getString('check'));
           print(prefs.getString('id'));
           print(prefs.getString('name'));// Save data in flutter 
-          Navigator.push(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
         }
         }
       });
