@@ -20,7 +20,7 @@ class UserManagement {
           // if(dosc.documents[0].data['isValidated'] == 'true'){
 
           // }
-          Navigator.push(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){
           print(dosc.documents[0].data['uid']);
@@ -32,7 +32,7 @@ class UserManagement {
           print(prefs.getString('check'));
           print(prefs.getString('id'));
           print(prefs.getString('name'));// Save data in flutter 
-          Navigator.push(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
+          Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
         }
         }
       });
