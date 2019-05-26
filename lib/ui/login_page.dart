@@ -12,6 +12,8 @@ class _LoginScreenState extends State<LoginScreen> {
   
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
+  final _scaffoldKey = new GlobalKey<ScaffoldState>();
+  final _formKey = GlobalKey<FormState>();
   FirebaseAuth _auth =FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
@@ -21,6 +23,7 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: EdgeInsets.only(top: 80),
         
         child: Form(
+          key: _formKey,
           child: Column(
               children: <Widget>[
                 Text(
@@ -65,25 +68,6 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(right: 23),
-                  child: FlatButton(
-                    child: SizedBox(
-                      width: double.infinity,
-                      child: Text(
-                        "Forgot password?",
-                        textAlign: TextAlign.right,
-                        style: TextStyle(
-                          color: Colors.blue,
-                          fontSize: 11
-                        ),
-                      ),
-                    ),
-                    onPressed: (){
-
-                    },
-                  )
-                ),
-                Padding(
                   padding: EdgeInsets.only(top: 20,left: 40,right: 40),
 
                   child: SizedBox(
@@ -106,6 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     shape: StadiumBorder(),
                     onPressed: (){
+                      if(_formKey.currentState.validate()){
                       _auth.signInWithEmailAndPassword(
                           email: emailcontroller.text,
                           password: passwordcontroller.text,
@@ -116,6 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             UserManagement().authorizeAccess(context);
                           }
                         });
+                      }
                     },
                   ),
                   ),
