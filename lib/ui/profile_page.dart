@@ -20,7 +20,15 @@ class _ProfileState extends State<Profile> {
   File selectedImage;
 
   SharedPreferences prefs;
-
+  void readLocal() async {
+    prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id') ?? '';
+    name = prefs.getString('name' ?? '');
+    role = prefs.getString('role' ?? '');
+    photoUrl = prefs.getString('photoUrl' ?? '');
+    // Force refresh input
+    setState(() {});
+  }
   String id = '';
   String name = '';
   String role = '';
@@ -28,20 +36,12 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     readLocal();
-    
   }
 
-  void readLocal() async {
-    prefs = await SharedPreferences.getInstance();
-    id = prefs.getString('id') ?? '';
-    name = prefs.getString('name' ?? '');
-    role = prefs.getString('role' ?? '');
-    photoUrl = prefs.getString('photoUrl' ?? '');
-  }
+
 
   Future selectPhoto() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
-
     setState(() {
       selectedImage = tempImage;
       uploadImage();
@@ -85,13 +85,14 @@ class _ProfileState extends State<Profile> {
         FutureBuilder(
           future: Firestore.instance.collection(role).document(id).get(),
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-
-            if (snapshot.hasData) {
-              return buildImage(context, snapshot.data.data["photoUrl"]);
-            } else {
+            if (!snapshot.hasData) {
               return Center(
                 child:CircularProgressIndicator()
+
               );
+            } else {
+              return buildImage(context, snapshot.data.data["photoUrl"]);
+              
             }
           },
         ),
