@@ -13,7 +13,6 @@ class _LoginScreenState extends State<LoginScreen> {
   
   TextEditingController emailcontroller = TextEditingController();
   TextEditingController passwordcontroller = TextEditingController();
-  final _scaffoldKey = new GlobalKey<ScaffoldState>();
   final _formKey = GlobalKey<FormState>();
   FirebaseAuth _auth =FirebaseAuth.instance;
   @override

@@ -18,6 +18,8 @@ class _DoctorFormState extends State<DoctorForm> {
   TextEditingController passconfcontrol = TextEditingController();
   TextEditingController name = TextEditingController();
   TextEditingController limit = TextEditingController();
+  TextEditingController idNo = TextEditingController();
+  TextEditingController mpln = TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
   File sampleImage;
   List<String> _departments = <String>[
@@ -44,10 +46,11 @@ class _DoctorFormState extends State<DoctorForm> {
       appBar: AppBar(
         title: Text("Register New Account"),
       ),
-      body: WillPopScope(
+      body: Padding(
+        padding: const EdgeInsets.all(18),
         child: Form(
           key: _formkey,
-          child: Column(
+          child: ListView(
             children: <Widget>[
               Row(
                   // children: <Widget>[
@@ -58,12 +61,34 @@ class _DoctorFormState extends State<DoctorForm> {
                   // ],
                   ),
               TextFormField(
-                  decoration: InputDecoration(labelText: "Email"),
+                  decoration: InputDecoration(
+                    labelText: "Email",
+                    hintText: "doctorcare@mail.com",
+                  ),
                   controller: emailcontrol,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     if (value.isEmpty) return "Email is required";
                   }),
+              TextFormField(
+                controller: name,
+                decoration: InputDecoration(
+                  hintText: "Name Surname",
+                  labelText: "Name - Surname",
+                ),
+                validator: (value) {
+                  int count = 0;
+                  if (value.isEmpty) return "Name is required";
+                  for (int i = 0; i < value.length; i++) {
+                    if (value[i] == " " && i != 0 && i != value.length - 1) {
+                      count += 1;
+                    }
+                  }
+                  if (count != 1) {
+                    return "Please fill name correctly";
+                  }
+                },
+              ),
               TextFormField(
                   decoration: InputDecoration(labelText: "Password"),
                   obscureText: true,
@@ -75,24 +100,40 @@ class _DoctorFormState extends State<DoctorForm> {
                       return "Password much more than 8";
                   }),
               TextFormField(
-                  decoration: InputDecoration(labelText: "Password"),
+                  decoration: InputDecoration(labelText: "Re-Password"),
                   obscureText: true,
                   controller: passconfcontrol,
                   validator: (value) {
                     if (value.isEmpty)
                       return "Password is required";
                     else if (passcontrol.text != passconfcontrol.text)
-                      return "Password Not Same";
+                      return "Password does not match";
                   }),
               TextFormField(
-                  decoration: InputDecoration(labelText: "Name"),
-                  controller: name,
-                  validator: (value) {
-                    if (value.isEmpty) return "Name is required";
-                  }),
+                decoration: InputDecoration(labelText: "Identification Number"),
+                controller: idNo,
+                validator: (value) {
+                  if (value.isEmpty)
+                    return "ID No. is required";
+                  else if (value.length != 13)
+                    return "ID No. must be 13 character";
+                },
+              ),
+              TextFormField(
+                decoration: InputDecoration(
+                    labelText: "Medical professional license number"),
+                controller: mpln,
+                validator: (value) {
+                  if (value.isEmpty) return "ID No. is required";
+                },
+              ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Limit patient"),
                 controller: limit,
+                validator: (value) {
+                  if (int.parse(value) < 0)
+                    return "Limit patient must more than 0";
+                },
               ),
               InputDecorator(
                 decoration: InputDecoration(
@@ -138,6 +179,8 @@ class _DoctorFormState extends State<DoctorForm> {
                             'Department': _department,
                             'limit': limit.text,
                             'status': "online",
+                            'idNo': idNo.text,
+                            'isValidated': 'false',
                             'photoUrl':
                                 'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                           });
@@ -152,6 +195,8 @@ class _DoctorFormState extends State<DoctorForm> {
                             'Department': _department,
                             'limit': limit.text,
                             'status': "online",
+                            'idNo': idNo.text,
+                            'isValidated': 'false',
                             'photoUrl':
                                 'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                           }).then((value) {
@@ -166,9 +211,6 @@ class _DoctorFormState extends State<DoctorForm> {
             ],
           ),
         ),
-        onWillPop: () {
-          Navigator.pop(context);
-        },
       ),
     );
   }
