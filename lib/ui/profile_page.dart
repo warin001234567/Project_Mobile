@@ -16,6 +16,10 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   String photoUrl = '';
+  String name_format = '';
+  String id = '';
+  String name = '';
+  String role = '';
 
   File selectedImage;
 
@@ -26,19 +30,25 @@ class _ProfileState extends State<Profile> {
     name = prefs.getString('name' ?? '');
     role = prefs.getString('role' ?? '');
     photoUrl = prefs.getString('photoUrl' ?? '');
+    // format name
+    for (int i = 0; i < name.length; i++) {
+      if (i == 0) {
+        name_format += name[i].toUpperCase();
+      } else if (name[i-1] == ' ') {
+        name_format += name[i].toUpperCase();
+      } else {
+        name_format += name[i];
+      }
+    }
     // Force refresh input
     setState(() {});
   }
-  String id = '';
-  String name = '';
-  String role = '';
+
   @override
   void initState() {
     super.initState();
     readLocal();
   }
-
-
 
   Future selectPhoto() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -79,8 +89,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: AppBar(title: Text('Profile'),),
-        body: new Stack(
+      body: new Stack(
       children: <Widget>[
         FutureBuilder(
           future: Firestore.instance.collection(role).document(id).get(),
@@ -104,8 +113,15 @@ class _ProfileState extends State<Profile> {
     return Center(
         child: Column(
           children: <Widget>[
-
-            SizedBox(height: 60.0),
+            SizedBox(height: 80.0),
+            Text(
+              'Profile',
+              style: TextStyle(
+                fontFamily: 'Quicksand Bold',
+                fontSize: 35,
+                color: Color.fromRGBO(125, 145, 193, 1)),
+            ),
+            SizedBox(height: 40.0),
             Container(
                 width: 150.0,
                 height: 150.0,
@@ -118,53 +134,64 @@ class _ProfileState extends State<Profile> {
                       BoxShadow(blurRadius: 7.0, color: Colors.black)
                     ])),
                                 SizedBox(height: 20.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: <Widget>[
-                Container(
-                    height: 40.0,
-                    width: 120.0,
-                    child: Material(
-                      borderRadius: BorderRadius.circular(20.0),
-                      shadowColor: Colors.blueAccent,
-                      color: Colors.blue,
-                      elevation: 7.0,
-                      child: GestureDetector(
-                        onTap: selectPhoto,
-                        child: Center(
-                          child: Text(
-                            'Change Picture',
-                            style: TextStyle(
-                                color: Colors.white, fontFamily: 'Montserrat'),
-                          ),
-                        ),
-                      ),
-                    )),
-              ],
-            ),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: <Widget>[
+            //     Container(
+            //         height: 40.0,
+            //         width: 120.0,
+            //         child: Material(
+            //           borderRadius: BorderRadius.circular(20.0),
+            //           shadowColor: Colors.blueAccent,
+            //           color: Colors.blue,
+            //           elevation: 7.0,
+            //           child: GestureDetector(
+            //             onTap: selectPhoto,
+            //             child: Center(
+            //               child: Text(
+            //                 'Change Picture',
+            //                 style: TextStyle(
+            //                     color: Colors.white, fontFamily: 'Montserrat'),
+            //               ),
+            //             ),
+            //           ),
+            //         )),
+            //   ],
+            // ),
             SizedBox(height: 20.0),
             Text(
-              name,
+              name_format,
               style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat'),
+                fontFamily: 'Quicksand Bold',
+                fontSize: 25,
+                color: Color.fromRGBO(125, 145, 193, 1)),
             ),
             SizedBox(height: 15.0),
             Text(
-              role,
+              "Status: " + role,
               style: TextStyle(
-                  fontSize: 17.0,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Montserrat'),
+                fontStyle: FontStyle.italic,
+                fontFamily: 'Quicksand Bold',
+                fontSize: 15,
+                color: Color.fromRGBO(125, 145, 193, 1)),
             ),
             SizedBox(height: 15.0),
             CustomButton(
               text: "Change Profile",
               width: 200,
+              gradient: LinearGradient(
+                colors: <Color>[Color.fromRGBO(200, 219, 241, 1), Color.fromRGBO(169, 201, 239, 1)],
+                begin: FractionalOffset(0, 0),
+                end: FractionalOffset(0.6, 0),
+                stops: [0.0, 1.0],
+              ),
               height: 50,
               onPressed: () {
-                Navigator.pushNamed(context, "/change");
+                if (role == "Patient") {
+                  Navigator.pushNamed(context, "/change_patient");
+                } else {
+                  Navigator.pushNamed(context, "/change_doctor");
+                }
               },)
           ],
         ));

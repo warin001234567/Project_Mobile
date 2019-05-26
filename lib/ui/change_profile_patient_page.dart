@@ -7,14 +7,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'button.dart';
 
-class ChangeProfile extends StatefulWidget {
+class ChangePatientProfile extends StatefulWidget {
   final String userId;
-  ChangeProfile({Key key, this.userId}) : super(key: key);
+  ChangePatientProfile({Key key, this.userId}) : super(key: key);
   @override
-  _ChangeProfileState createState() => new _ChangeProfileState();
+  _ChangePatientProfileState createState() => new _ChangePatientProfileState();
 }
 
-class _ChangeProfileState extends State<ChangeProfile> {
+class _ChangePatientProfileState extends State<ChangePatientProfile> {
+  TextEditingController new_name = TextEditingController();
   String photoUrl = '';
 
   File selectedImage;
@@ -76,9 +77,9 @@ class _ChangeProfileState extends State<ChangeProfile> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text('Profile'),
+          title: Text('Edit Profile'),
         ),
         body: new Stack(
           children: <Widget>[
@@ -115,44 +116,53 @@ class _ChangeProfileState extends State<ChangeProfile> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             Container(
-                height: 40.0,
+                height: 30.0,
                 width: 120.0,
-                child: Material(
-                  borderRadius: BorderRadius.circular(20.0),
-                  shadowColor: Colors.blueAccent,
-                  color: Colors.blue,
-                  elevation: 7.0,
-                  child: GestureDetector(
-                    onTap: selectPhoto,
-                    child: Center(
-                      child: Text(
-                        'Change Picture',
-                        style: TextStyle(
-                            color: Colors.white, fontFamily: 'Montserrat'),
-                      ),
-                    ),
+                child: CustomButton(
+                  text: "Change Picture",
+                  width: 150,
+                  gradient: LinearGradient(
+                    colors: <Color>[
+                      Color.fromRGBO(200, 219, 241, 1),
+                      Color.fromRGBO(169, 201, 239, 1)
+                    ],
+                    begin: FractionalOffset(0, 0),
+                    end: FractionalOffset(0.6, 0),
+                    stops: [0.0, 1.0],
                   ),
+                  height: 20,
+                  onPressed: selectPhoto,
                 )),
           ],
         ),
         SizedBox(height: 20.0),
-        Column(children: <Widget>[
-          Text("Name"),
-                  TextField(
-          decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 60.0),
-              
-              prefixText: 'Name : '),
-              ),
-        ],),
-        SizedBox(height: 15.0),
-        Text(
-          role,
-          style: TextStyle(
-              fontSize: 17.0,
-              fontStyle: FontStyle.italic,
-              fontFamily: 'Montserrat'),
+        Padding(
+          padding: EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          child: TextFormField(
+              decoration: InputDecoration(
+                  labelText: "Name: ", labelStyle: TextStyle(fontSize: 15)),
+              controller: new_name,
+              validator: (value) {
+                if (value.isEmpty) return "Name is required";
+              }),
         ),
+        SizedBox(height: 15.0),
+        CustomButton(
+            text: "Save",
+            width: 100,
+            gradient: LinearGradient(
+              colors: <Color>[
+                Color.fromRGBO(200, 219, 241, 1),
+                Color.fromRGBO(169, 201, 239, 1)
+              ],
+              begin: FractionalOffset(0, 0),
+              end: FractionalOffset(0.6, 0),
+              stops: [0.0, 1.0],
+            ),
+            height: 30,
+            onPressed: () {
+              
+            }),
       ],
     ));
   }

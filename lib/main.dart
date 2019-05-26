@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:project_mobile/ui/change_profile_page.dart';
+import 'package:project_mobile/ui/change_profile_patient_page.dart';
+import 'package:project_mobile/ui/change_profile_doctor_page.dart';
 import 'package:project_mobile/ui/detail_page.dart';
 import './ui/login_page.dart';
 import './ui/role_page.dart';
@@ -29,7 +30,8 @@ class MyApp extends StatelessWidget {
        "/add": (context) => Adddoctor(),
        "/chat": (context) => HomeDoctor(),
        "/home": (context) => HomePatient(),
-       "/change":(context) => ChangeProfile(),
+       "/change_patient":(context) => ChangePatientProfile(),
+       "/change_doctor":(context) => ChangeDoctorProfile(),
        "/detail":(context) => DetailScreen(),
         },
     );
