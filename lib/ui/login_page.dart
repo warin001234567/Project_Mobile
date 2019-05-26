@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './button.dart';
-
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../services/usermanagement.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -124,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.face),
+                                  Icon(FontAwesomeIcons.facebook),
                                   Padding(padding: EdgeInsets.only(right: 10),),
                                   Text("facebook",
                                   style: TextStyle(
