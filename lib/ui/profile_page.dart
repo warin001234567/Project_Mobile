@@ -61,7 +61,7 @@ class _ProfileState extends State<Profile> {
             photoUrl = downloadUrl;
             print(photoUrl);
             Firestore.instance
-                .collection('users')
+                .collection('Patient')
                 .document(id)
                 .updateData({'photoUrl': photoUrl});
             setState(() {
@@ -80,7 +80,7 @@ class _ProfileState extends State<Profile> {
         body: new Stack(
       children: <Widget>[
         FutureBuilder(
-          future: Firestore.instance.collection('users').document(id).get(),
+          future: Firestore.instance.collection('Patient').document(id).get(),
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
             if (snapshot.hasData) {
               return buildImage(context, snapshot.data.data["photoUrl"]);

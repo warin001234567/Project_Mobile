@@ -128,7 +128,7 @@ auth
                                       password: passcontrol.text)
                                   .then((user) {
                                 Firestore.instance
-                                    .collection('/users')
+                                    .collection('Patient')
                                     .document(user.uid)
                                     .setData({
                                   'email': user.email,

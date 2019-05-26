@@ -35,7 +35,7 @@ class _MainDoctorState extends State<MainDoctor> {
       body: Center(
         child: Container(
           child: StreamBuilder(
-            stream: Firestore.instance.collection('users').snapshots(),
+            stream: Firestore.instance.collection('Patient').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return CircularProgressIndicator();

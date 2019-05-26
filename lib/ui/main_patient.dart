@@ -157,7 +157,7 @@ class MainPatientState extends State<MainPatient> {
                 }
                 if (check == 'false' && int.parse(limit) > 0) {
                                   Firestore.instance
-                    .collection('users')
+                    .collection('Patient')
                     .document(id)
                     .updateData({'check': 'true' + peerid});
                 Firestore.instance
@@ -176,7 +176,6 @@ class MainPatientState extends State<MainPatient> {
                           userId: id),
                     ),
                   );
-                  Navigator.pop(context);
                 } else if (check == 'true' + peerid && int.parse(limit) >= 0) {
                   Navigator.push(
                     context,
@@ -187,7 +186,6 @@ class MainPatientState extends State<MainPatient> {
                           userId: id),
                     ),
                   );
-                  Navigator.pop(context);
                 } else{
                   return print("ya kung za kub");
                 }
