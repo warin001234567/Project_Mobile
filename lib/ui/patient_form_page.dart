@@ -156,10 +156,14 @@ class _PatientFormState extends State<PatientForm> {
                                   Navigator.of(context).popUntil(ModalRoute.withName('/'));
                                   Navigator.of(context)
                                       .pushReplacementNamed('/');
-                                }).catchError((e) {
-                                  print(e);
                                 });
-                              });
+                              }).catchError((e) {
+                                  Scaffold.of(_formkey.currentContext)
+	                              .showSnackBar(SnackBar(
+	                            content: Text(e.toString()),
+	                              )
+	                              );
+                                });
                           }
                         },
                       )

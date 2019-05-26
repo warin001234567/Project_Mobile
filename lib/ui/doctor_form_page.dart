@@ -265,6 +265,12 @@ class _DoctorFormState extends State<DoctorForm> {
                                   Navigator.of(context)
                                       .pushReplacementNamed('/')
                               });
+                          }).catchError((onError)=>{
+                            Scaffold.of(_formkey.currentContext)
+	                              .showSnackBar(SnackBar(
+	                            content: Text(onError.toString()),
+	                              )
+	                              )
                           });
                     }
                   },
