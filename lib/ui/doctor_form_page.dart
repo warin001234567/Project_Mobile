@@ -257,27 +257,6 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'photoUrl':
                                   'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                               });
-                            Firestore.instance
-                                .collection('Patient')
-                                .document(user.uid)
-                                .setData({
-                              'email': user.email,
-                              'uid': user.uid,
-                              'role': "Doctor",
-                              'name': name.text,
-                              'department': _department,
-                              'limit': limit.text,
-                              'status': "online",
-                              'idNo': idNo.text,
-                              'isValidated': 'false',
-                              'photoUrl':
-                                  'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
-                            }).then((value) {
-                              Navigator.of(context).pop();
-                              Navigator.of(context).pushReplacementNamed('/');
-                            }).catchError((e) {
-                              print(e);
-                            });
                           });
                     }
                   },
