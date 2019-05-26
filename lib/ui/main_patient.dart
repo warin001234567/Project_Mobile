@@ -177,6 +177,16 @@ class MainPatientState extends State<MainPatient> {
   }
 
   void _showDialog(String peerid, String limit) {
+    if(peerid == check){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Chat(
+                          groupId: groupchatId, peerId: peerid, userId: id),
+                    ),
+                  );
+    }
+    else{
     // flutter defined function
     showDialog(
       context: context,
@@ -194,17 +204,7 @@ class MainPatientState extends State<MainPatient> {
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if (check == peerid) {
-                    
-                  Navigator.pop(context);
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Chat(
-                          groupId: groupchatId, peerId: peerid, userId: id),
-                    ),
-                  );
-                }else if( check == '' && int.parse(limit)> 0){
+                if( check == '' && int.parse(limit)> 0){
                   Firestore.instance
                         .collection('Patient')
                         .document(id)
@@ -218,7 +218,7 @@ class MainPatientState extends State<MainPatient> {
                     prefs.setString('check', peerid);
                     check = prefs.getString('check');
                     Navigator.pop(context);
-                  Navigator.push(
+                    Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Chat(
@@ -276,5 +276,6 @@ class MainPatientState extends State<MainPatient> {
         );
       },
     );
+  }
   }
 }
