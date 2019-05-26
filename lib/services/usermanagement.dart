@@ -12,7 +12,7 @@ class UserManagement {
   Future authorizeAccess(BuildContext context) async {
     SharedPreferences prefs;
     FirebaseAuth.instance.currentUser().then((user){
-      Firestore.instance.collection('/users')
+      Firestore.instance.collection('Patient')
       .where('uid',isEqualTo:user.uid).getDocuments()
       .then((dosc) async {
         if(dosc.documents[0].exists){

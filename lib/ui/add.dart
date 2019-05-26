@@ -152,7 +152,7 @@ id = prefs.getString('id') ?? '';
   Widget buildDoctor(){
     return Container(
               child: StreamBuilder(
-                stream: Firestore.instance.collection('users').snapshots(),
+                stream: Firestore.instance.collection('Patient').snapshots(),
                 builder: (context, snapshot) {
                   if (!snapshot.hasData) {
                     return Text("print(department);");
