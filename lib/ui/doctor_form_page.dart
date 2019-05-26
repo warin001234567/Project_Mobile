@@ -23,14 +23,13 @@ class _DoctorFormState extends State<DoctorForm> {
   FirebaseAuth auth = FirebaseAuth.instance;
   File sampleImage;
   List<String> _departments = <String>[
-    "Choose your Department",
     "MEDICINE",
     "PEDIATRIRC",
     "SURGICAL",
     "PRTHOPEDIC",
     "OBSTRETIC-GYNECOLOGY"
   ];
-  String _department = "Choose your Department";
+  String _department = "MEDICINE";
   Future getImage() async {
     var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
 
@@ -200,11 +199,12 @@ class _DoctorFormState extends State<DoctorForm> {
                   child: 
                 InputDecorator(
                   decoration: InputDecoration(
-                    labelText: "Departments (defult GENERAL)",
+                    labelText: "Departments",
                     labelStyle: TextStyle(fontSize: 13),
                   ),
-                  isEmpty: _department == 'GENARAL',
+                  isEmpty: _department == '',
                   child: DropdownButtonHideUnderline(
+                    
                     child: DropdownButton(
                       value: _department,
                       isDense: true,
