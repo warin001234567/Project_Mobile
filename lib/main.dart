@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_mobile/ui/change_profile_page.dart';
 import './ui/login_page.dart';
 import './ui/role_page.dart';
 import './ui/chat_page.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
        "/add": (context) => Adddoctor(),
        "/chat": (context) => HomeDoctor(),
        "/home": (context) => HomePatient(),
+       "/change":(context) => ChangeProfile(),
         },
     );
   }
