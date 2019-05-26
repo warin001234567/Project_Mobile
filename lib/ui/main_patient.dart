@@ -154,15 +154,15 @@ class MainPatientState extends State<MainPatient> {
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                Firestore.instance
+                if (check == 'false' && limit != '0') {
+                                  Firestore.instance
                     .collection('users')
                     .document(id)
                     .updateData({'check': 'true' + peerid});
                 Firestore.instance
-                    .collection('users')
+                    .collection('Doctor')
                     .document(id)
-                    .updateData({'user limit': int.parse(limit)-1});
-                if (check == 'false' && limit != '0') {
+                    .updateData({'limit': int.parse(limit)-1});
                   prefs = await SharedPreferences.getInstance();
                   prefs.setString('check', 'true' + peerid);
                   check = prefs.getString('check');
