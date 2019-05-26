@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import './doctor_form_page.dart';
+import '../main.dart';
 import './patient_form_page.dart';
 
 
@@ -20,11 +21,10 @@ class RoleScreenState extends State<RoleScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          "Register New Account",
-        ),
-      ),
+      // appBar: new AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0.0,
+      // ),
       body: Stack(
         children: <Widget>[
           Center(
@@ -121,6 +121,23 @@ class RoleScreenState extends State<RoleScreen> {
               ]
             )
           ),
+          Container(
+            child: Padding(
+              padding: EdgeInsets.only(top: 30.0, left: 6.0),
+              child: IconButton(
+                icon: Icon(
+                  IconData(
+                    58848, 
+                    fontFamily: 'MaterialIcons', 
+                    matchTextDirection: true
+                  )
+                ), 
+                onPressed: () {
+                  Navigator.pushNamed(context, '/');
+                },
+              ),
+            ),
+          )
         ]
       )
     );

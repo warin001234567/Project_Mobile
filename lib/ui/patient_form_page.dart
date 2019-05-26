@@ -21,36 +21,44 @@ class _PatientFormState extends State<PatientForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
-      body: Padding(
-          padding: EdgeInsets.all(18),
+      body: Container(
           child: Form(
               key: _formkey,
-              child: Padding(
-                padding: EdgeInsets.only(top: 35, left: 20, right: 20),
-                child: Column(
+              child: SingleChildScrollView(
+                child:Padding(
+                  padding: EdgeInsets.only(top: 35, left: 20, right: 20),
+                  child: Column(
                   children: <Widget>[
-                    Text(
-                      'SIGN UP',
-                      style: TextStyle(
-                          fontFamily: 'Quicksand Bold',
-                          fontSize: 35,
-                          color: Colors.blueGrey),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        IconButton(
+                            icon: Icon(
+                              Icons.chevron_left,
+                              color: Colors.grey,
+                            ),
+                            onPressed: (){
+                            Navigator.pop(context);
+                            },
+                        ),
+                      ]
                     ),
-                    // Row(
-                    //   children: <Widget>[
-                    //     IconButton(
-                    //       icon: Icon(Icons.accessibility),
-                    //       onPressed: () {
-                    //         Firestore.instance.collection('/Doctor');
-                    //       },
-                    //     ),
-                    //     IconButton(
-                    //       icon: Icon(Icons.pan_tool),
-                    //       onPressed: () {
-                    //         Firestore.instance.collection('/Pantial');
-                    //       },)
-                    //   ],
-                    // ),
+                    Padding(
+                      padding: EdgeInsets.only(left: 20, right: 20),
+                      child: Column(
+                        children: <Widget>[
+                          Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                         Text(
+                            'SIGN UP',
+                            style: TextStyle(
+                            fontFamily: 'Quicksand Bold',
+                            fontSize: 35,
+                            color: Colors.blueGrey),
+                          ),
+                      ],
+                    ),
                     Padding(
                       padding: EdgeInsets.only(top: 15),
                       child: TextFormField(
@@ -114,29 +122,35 @@ class _PatientFormState extends State<PatientForm> {
                         validator: (value) {
                           if (value.isEmpty) return "Symptom is required";
                         }),
-                    ),                    
+                    ),                   
                     Padding(
-                      padding: EdgeInsets.only(top: 50),
+                      padding: EdgeInsets.only(top: 45,bottom: 15),
                       child:  CustomButton(
                         text: 'Register',
                         height: 40,
                         onPressed: (){
                           if(_formkey.currentState.validate()){
-auth
+                            auth
                                   .createUserWithEmailAndPassword(
                                       email: emailcontrol.text,
                                       password: passcontrol.text)
                                   .then((user) {
                                 Firestore.instance
-                                    .collection('Patient')
+                                    .collection('/users')
                                     .document(user.uid)
                                     .setData({
                                   'email': user.email,
                                   'uid': user.uid,
                                   'role': "Patient",
+<<<<<<< HEAD
                                   'name': name.text,
                                   'check': '',
                                   'symptom': symptom.text,
+=======
+                                  'Name': name.text,
+                                  'check': 'false',
+                                  'Symptom': symptom.text,
+>>>>>>> e946ace36b44ae6de79b40b0215d1c42913afd9d
                                   'photoUrl':
                                       'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                                 }).then((value) {
@@ -148,13 +162,18 @@ auth
                                 });
                               });
                           }
-                          
                         },
                       )
+                    )
+                        ],
+                      )
+                    ),
+                    
+                  ],),
                 )
-                  ],
-                ),
-              ))),
+              )
+          )
+      ),
     );
   }
 }
