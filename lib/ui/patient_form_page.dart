@@ -142,15 +142,9 @@ class _PatientFormState extends State<PatientForm> {
                                   'email': user.email,
                                   'uid': user.uid,
                                   'role': "Patient",
-<<<<<<< HEAD
                                   'name': name.text,
                                   'check': '',
                                   'symptom': symptom.text,
-=======
-                                  'Name': name.text,
-                                  'check': 'false',
-                                  'Symptom': symptom.text,
->>>>>>> e946ace36b44ae6de79b40b0215d1c42913afd9d
                                   'photoUrl':
                                       'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                                 }).then((value) {
