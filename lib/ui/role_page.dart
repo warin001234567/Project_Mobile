@@ -21,32 +21,91 @@ class RoleScreenState extends State<RoleScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Register New Account"),
+        title: Text(
+          "Register New Account",
+        ),
       ),
-      body: Padding(
-        padding: EdgeInsets.all(18),
-        child: Form(
-          key: _formkey,
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(Icons.accessibility),
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => DoctorForm()));
-                    },
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.pan_tool),
-                    onPressed: () {
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => PatientForm()));
-                      
-                    },)
-                ],
-              ),
-            ],
-          ),
+      body: Center(
+        key: _formkey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  // crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text('Register As',
+                      style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child:GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => DoctorForm()));
+                        },
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          child: Image.asset(
+                            'res/images/doc-select.jpg',
+                            height: 120.0,
+                            width: 120.0,
+                            fit: BoxFit.fill
+                          ),
+                        )
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 50.0),
+                      child: Text('Doctor'),
+                    )
+                  ]
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child:GestureDetector(
+                        onTap: () {
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => PatientForm()));
+                        },
+                        child: ClipRRect(
+                          borderRadius: new BorderRadius.circular(10.0),
+                          child: Image.asset(
+                            'res/images/pat-select.jpg',
+                            height: 120.0,
+                            width: 120.0,
+                            fit: BoxFit.fill
+                          ),
+                        )
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 49.0),
+                      child: Text('Patient'),
+                    )
+                  ]
+                ),
+              ],
+            ),
+          ]
         )
       ),
     );
