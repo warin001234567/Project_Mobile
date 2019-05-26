@@ -121,7 +121,8 @@ class _PatientFormState extends State<PatientForm> {
                         text: 'Register',
                         height: 40,
                         onPressed: (){
-                          auth
+                          if(_formkey.currentState.validate()){
+auth
                                   .createUserWithEmailAndPassword(
                                       email: emailcontrol.text,
                                       password: passcontrol.text)
@@ -146,6 +147,8 @@ class _PatientFormState extends State<PatientForm> {
                                   print(e);
                                 });
                               });
+                          }
+                          
                         },
                       )
                 )
