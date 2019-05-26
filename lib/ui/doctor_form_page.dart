@@ -181,13 +181,16 @@ class _DoctorFormState extends State<DoctorForm> {
                 Padding(
                   padding: EdgeInsets.only(top: 15),
                   child: TextFormField(
+                    keyboardType: TextInputType.number,
                   decoration: InputDecoration(
                     labelText: "Limit patient",
                     labelStyle: TextStyle(fontSize: 10),
                     ),
                   controller: limit,
                   validator: (value) {
-                    if (int.parse(value) < 0)
+
+                    if(value.isEmpty)return "Please enter limit";
+                    if (int.parse(value) <= 0)
                       return "Limit patient must more than 0";
                   },
                 ),
@@ -197,10 +200,10 @@ class _DoctorFormState extends State<DoctorForm> {
                   child: 
                 InputDecorator(
                   decoration: InputDecoration(
-                    labelText: "Departments",
+                    labelText: "Departments (defult GENERAL)",
                     labelStyle: TextStyle(fontSize: 13),
                   ),
-                  isEmpty: _department == '',
+                  isEmpty: _department == 'GENARAL',
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                       value: _department,
@@ -210,6 +213,7 @@ class _DoctorFormState extends State<DoctorForm> {
                           _department = value;
                         });
                       },
+                      
                       items: _departments.map(
                         (String value) {
                           return DropdownMenuItem<String>(
@@ -256,6 +260,10 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'isValidated': 'false',
                                 'photoUrl':
                                   'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
+                              }).then((_)=>{
+                                  Navigator.of(context).popUntil(ModalRoute.withName('/')),
+                                  Navigator.of(context)
+                                      .pushReplacementNamed('/')
                               });
                           });
                     }
