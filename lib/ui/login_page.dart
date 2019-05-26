@@ -31,7 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   style: TextStyle(
                     fontFamily: 'Quicksand Bold',
                     fontSize: 35,
-                    color: Colors.blueGrey
+                    color: Color.fromRGBO(125, 145, 193, 1)
                   ),
                   ),
                 Padding(
@@ -73,6 +73,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: CustomButton(
                     text: 'Login',
                     height: 40,
+                    gradient: LinearGradient(
+                    colors: <Color>[Color.fromRGBO(200, 219, 241, 1), Color.fromRGBO(169, 201, 239, 1)],
+                    begin: FractionalOffset(0, 0),
+                    end: FractionalOffset(0.6, 0),
+                    stops: [0.0, 1.0],
+                    ),
                     onPressed: (){
                       if(_formKey.currentState.validate()){
                       _auth.signInWithEmailAndPassword(
