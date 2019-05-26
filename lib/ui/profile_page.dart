@@ -52,7 +52,9 @@ class _ProfileState extends State<Profile> {
   Future uploadImage() async {
       String fileName = id;
       StorageReference reference =
-          FirebaseStorage.instance.ref().child(fileName);
+          FirebaseStorage
+          .instance.ref()
+          .child(fileName);
       StorageUploadTask uploadTask = reference.putFile(selectedImage);
       StorageTaskSnapshot storageTaskSnapshot;
       uploadTask.onComplete.then((value) {
@@ -62,7 +64,7 @@ class _ProfileState extends State<Profile> {
             photoUrl = downloadUrl;
             print(photoUrl);
             Firestore.instance
-                .collection('Patient')
+                .collection(role)
                 .document(id)
                 .updateData({'photoUrl': photoUrl});
             setState(() {
@@ -81,8 +83,9 @@ class _ProfileState extends State<Profile> {
         body: new Stack(
       children: <Widget>[
         FutureBuilder(
-          future: Firestore.instance.collection('Patient').document(id).get(),
+          future: Firestore.instance.collection(role).document(id).get(),
           builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+
             if (snapshot.hasData) {
               return buildImage(context, snapshot.data.data["photoUrl"]);
             } else {
