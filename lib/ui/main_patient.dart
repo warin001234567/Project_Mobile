@@ -142,8 +142,8 @@ class MainPatientState extends State<MainPatient> {
       builder: (BuildContext context) {
         // return object of type Dialog
         return AlertDialog(
-          title: new Text("Alert Dialog title"),
-          content: new Text("Alert Dialog body"),
+          title: new Text("Do you want to talk with this doctor?"),
+          content: new Text("Please submit your answer"),
           actions: <Widget>[
             FlatButton(
               child: new Text("Yes"),
@@ -155,28 +155,21 @@ class MainPatientState extends State<MainPatient> {
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if (check == 'false' && int.parse(limit) > 0) {
-                                  Firestore.instance
+                if ((check == peerid || check == '') && int.parse(limit) >= 0) {
+                  if (check == ''){
+                    Firestore.instance
                     .collection('Patient')
                     .document(id)
-                    .updateData({'check': 'true' + peerid});
+                    .updateData({'check': peerid});
                 Firestore.instance
                     .collection('Doctor')
                     .document(peerid)
                     .updateData({'limit': (int.parse(limit)-1).toString()});
                   prefs = await SharedPreferences.getInstance();
-                  prefs.setString('check', 'true' + peerid);
+                  prefs.setString('check', peerid);
                   check = prefs.getString('check');
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Chat(
-                          groupId: groupchatId,
-                          peerId: peerid,
-                          userId: id),
-                    ),
-                  );
-                } else if (check == 'true' + peerid && int.parse(limit) >= 0) {
+                  }
+                  Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
