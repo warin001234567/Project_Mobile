@@ -17,135 +17,143 @@ class _MainDoctorState extends State<MainDoctor> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Main'),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
+      appBar: new AppBar(
+        title: new Text('Main'),
+        centerTitle: true,
+        actions: <Widget>[
+          IconButton(
               icon: new Icon(Icons.settings_power),
-              onPressed: (){
-                    FirebaseAuth.instance.signOut().then((value) {
-                      Navigator
-                          .of(context)
-                          .pushReplacementNamed('/');
-                    }).catchError((e) {
-                      print(e);
-                    });
+              onPressed: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                  Navigator.of(context).pushReplacementNamed('/');
+                }).catchError((e) {
+                  print(e);
+                });
+              }),
+        ],
+      ),
+      body: Center(
+        child: Container(
+          child: StreamBuilder(
+            stream: Firestore.instance.collection('users').snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Text("No data");
+              } else {
+                return ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  itemBuilder: (context, index) =>
+                      buildList(context, snapshot.data.documents[index]),
+                  itemCount: snapshot.data.documents.length,
+                );
               }
-            ),
-          ],
-        ),
-        body: Center(
-          child:Container(
-              child: StreamBuilder(
-                stream: Firestore.instance.collection('users').snapshots(),
-                builder: (context, snapshot) {
-                  if (!snapshot.hasData) {
-                    return Text("No data");
-                  } else {
-                    return ListView.builder(
-                      padding: EdgeInsets.all(10.0),
-                      itemBuilder: (context, index) => buildList(context, snapshot.data.documents[index]),
-                      itemCount: snapshot.data.documents.length,
-                    );
-                  }
-                },
-              ),
-            ),
+            },
           ),
-        );
+        ),
+      ),
+    );
   }
+
   Widget buildList(BuildContext context, DocumentSnapshot document) {
-      return Container(
-        child: document['role'] != 'Patient' ? Container()
-        :document['grouppatient'] == document['have'] ?
-        FlatButton(
-          child: Row(
-            children: <Widget>[
-              Material(
-                child: CachedNetworkImage(
-                  placeholder: (context, url) => Container(
-                        child: CircularProgressIndicator(
-                          strokeWidth: 1.0,
-                        ),
-                        width: 50.0,
-                        height: 50.0,
-                        padding: EdgeInsets.all(15.0),
-                      ),
-                  imageUrl: document['photoUrl'],
-                  width: 50.0,
-                  height: 50.0,
-                  fit: BoxFit.cover,
-                ),
-                borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                clipBehavior: Clip.hardEdge,
-              ),
-              Flexible(
-                child: Container(
-                  child: Column(
+    return Container(
+      child: document['role'] != 'Patient'
+          ? Container()
+          : document['grouppatient'] == document['have']
+              ? FlatButton(
+                  child: Row(
                     children: <Widget>[
-                      Container(
-                        child: Text(
-                          'Name: ${document['Name']}',
-                          style: TextStyle(color: Colors.black),
+                      Material(
+                        child: CachedNetworkImage(
+                          placeholder: (context, url) => Container(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1.0,
+                                ),
+                                width: 50.0,
+                                height: 50.0,
+                                padding: EdgeInsets.all(15.0),
+                              ),
+                          imageUrl: document['photoUrl'],
+                          width: 50.0,
+                          height: 50.0,
+                          fit: BoxFit.cover,
                         ),
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
+                        clipBehavior: Clip.hardEdge,
                       ),
-                      Container(
-                        child: Text(
-                          'Department: ${document['Department'] ?? 'Not available'}',
-                          style: TextStyle(color: Colors.black),
+                      Flexible(
+                        child: Container(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                child: Text(
+                                  'Name: ${document['Name']}',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                alignment: Alignment.centerLeft,
+                                margin:
+                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                              ),
+                              Container(
+                                child: Text(
+                                  'Department: ${document['Department'] ?? 'Not available'}',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                alignment: Alignment.centerLeft,
+                                margin:
+                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                              ),
+                              Container(
+                                child: Text(
+                                  'limit: ${document['status'] ?? 'unlimited'}',
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                                alignment: Alignment.centerLeft,
+                                margin:
+                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                              )
+                            ],
+                          ),
+                          margin: EdgeInsets.only(left: 20.0),
                         ),
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
                       ),
-                      Container(
-                        child: Text(
-                          'limit: ${document['status'] ?? 'unlimited'}',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        alignment: Alignment.centerLeft,
-                        margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                      )
                     ],
                   ),
-                  margin: EdgeInsets.only(left: 20.0),
-                ),
-              ),
-            ],
-          ),
-          onPressed: () {
+                  onPressed: () {
                     id = document['uid'];
-                    checked = document['check'];
-                    someMethod().then((value){
+                    someMethod().then((value) {
                       if (id.hashCode <= value.hashCode) {
-                          groupchatId = '$id-$value';
-                        } else {
-                          groupchatId = '$value-$id';
-                        }
-                        print(groupchatId);
-                        print(value);
-                        print(id);
-                      Navigator.push(context,MaterialPageRoute(builder: (context) => Chat(groupId: groupchatId, 
-                                                                                          peerId: id,
-                                                                                          userId: value,
-                                                                                          check: checked), ),);
-                    });                                                                    
-          },
-          color: Colors.blueAccent,
-          padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-        )
-        :Container(),
-        margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
-      );
-    
+                        groupchatId = '$id-$value';
+                      } else {
+                        groupchatId = '$value-$id';
+                      }
+                      print(groupchatId);
+                      print(value);
+                      print(id);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Chat(
+                                groupId: groupchatId,
+                                peerId: id,
+                                userId: value,
+                              ),
+                        ),
+                      );
+                    });
+                  },
+                  color: Colors.blueAccent,
+                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0)),
+                )
+              : Container(),
+      margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
+    );
   }
 
   someMethod() async {
-  FirebaseUser user = await FirebaseAuth.instance.currentUser();
-  String id = user.uid;
-  return id;
-   } 
+    FirebaseUser user = await FirebaseAuth.instance.currentUser();
+    String id = user.uid;
+    return id;
+  }
 }

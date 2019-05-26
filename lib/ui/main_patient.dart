@@ -123,7 +123,7 @@ class MainPatientState extends State<MainPatient> {
           ],
         ),
         onPressed: () {
-          _showDialog(document['uid'], document['user limit']);
+          _showDialog(document['uid'], document['limit']);
         },
         color: Colors.blueAccent,
         padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
@@ -161,8 +161,8 @@ class MainPatientState extends State<MainPatient> {
                     .updateData({'check': 'true' + peerid});
                 Firestore.instance
                     .collection('Doctor')
-                    .document(id)
-                    .updateData({'limit': int.parse(limit)-1});
+                    .document(peerid)
+                    .updateData({'limit': (int.parse(limit)-1).toString()});
                   prefs = await SharedPreferences.getInstance();
                   prefs.setString('check', 'true' + peerid);
                   check = prefs.getString('check');
@@ -172,8 +172,7 @@ class MainPatientState extends State<MainPatient> {
                       builder: (context) => Chat(
                           groupId: groupchatId,
                           peerId: peerid,
-                          userId: id,
-                          check: checked),
+                          userId: id),
                     ),
                   );
                 } else if (check == 'true' + peerid && limit != '0') {
@@ -183,12 +182,11 @@ class MainPatientState extends State<MainPatient> {
                       builder: (context) => Chat(
                           groupId: groupchatId,
                           peerId: peerid,
-                          userId: id,
-                          check: checked),
+                          userId: id),
                     ),
                   );
                 } else {
-                  return print("ya");
+                  return print("ya kung za kub");
                 }
               },
             ),

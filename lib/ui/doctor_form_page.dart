@@ -172,7 +172,7 @@ class _DoctorFormState extends State<DoctorForm> {
           ),
         ),
         onWillPop: () {
-          Navigator.pushNamed(context, "/register");
+          Navigator.pop(context);
         },
       ),
     );

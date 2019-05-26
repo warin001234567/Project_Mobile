@@ -8,8 +8,7 @@ class Chat extends StatefulWidget {
   final String groupId;
   final String peerId;
   final String userId;
-  final String check;
-  Chat({Key key, this.groupId,this.peerId,this.userId,this.check}) : super(key:key);
+  Chat({Key key, this.groupId,this.peerId,this.userId}) : super(key:key);
   @override
   _ChatState createState() => _ChatState();
 }
@@ -37,6 +36,7 @@ class _ChatState extends State<Chat> {
               )
             ],
           ), onWillPop: () {
+            Navigator.pop(context);
             Navigator.pop(context);
           }, 
           
@@ -83,14 +83,6 @@ class _ChatState extends State<Chat> {
           .document(widget.groupId)
           .collection(widget.groupId)
           .document(DateTime.now().millisecondsSinceEpoch.toString());
-          // if(widget.check == 'false'){
-          //   print(widget.check);
-          //   count +=1;
-          // Firestore.instance.collection('users').document(widget.userId).updateData({
-          //   'Have': "has"+widget.peerId,
-          //   'check': 'true',
-          //   });
-          // }
       Firestore.instance.runTransaction((transaction) async {
         await transaction.set(
           documentReference,
