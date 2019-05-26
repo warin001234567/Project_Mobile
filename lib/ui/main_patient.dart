@@ -59,26 +59,28 @@ class MainPatientState extends State<MainPatient> {
               if (!snapshot.hasData) {
                 return CircularProgressIndicator();
               } else {
-                return ListView.builder(
+                return ExpansionTile(title: Text("Consult Doctor"),
+                 children: <Widget>[
+                  ListView.builder(
                   padding: EdgeInsets.all(10.0),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     if(snapshot.data.documents[index].data['uid'] == prefs.getString('check')){
-                      return Column(
-                        children: <Widget>[
-                          Text("Your consult doctor"),
+                      return Container(
+                        child:
                           buildList(context, snapshot.data.documents[index])
-                        ],
                       );
                     }
                   },
                   itemCount: snapshot.data.documents.length,
-                );
+                )
+                ],);
               }
             },
           ),
-          Center(child:Text('All doctor')),
-          StreamBuilder(
+          ExpansionTile(title: Text('All doctor'),
+          children: <Widget>[
+            StreamBuilder(
             stream: Firestore.instance.collection('Doctor').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -97,6 +99,7 @@ class MainPatientState extends State<MainPatient> {
               }
             },
           ),
+          ],)
           
           ],)
         ),
