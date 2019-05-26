@@ -254,7 +254,7 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'role': "Doctor",
                                 'name': name.text,
                                 'department': _department,
-                                'limit': limit.text,
+                                'limit': int.parse(limit.text).toString(),
                                 'status': "online",
                                 'idNo': idNo.text,
                                 'isValidated': 'false',
