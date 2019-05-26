@@ -29,9 +29,6 @@ class UserManagement {
           await prefs.setString('name', dosc.documents[0].data['Name']);
           await prefs.setString('check', dosc.documents[0].data['check']);
           await prefs.setString('photoUrl', dosc.documents[0].data['photoUrl']);
-          print(prefs.getString('check'));
-          print(prefs.getString('id'));
-          print(prefs.getString('name'));// Save data in flutter 
           Navigator.push(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
         }
         }

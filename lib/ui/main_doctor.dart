@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'chat_page.dart';
 
 class MainDoctor extends StatefulWidget {
@@ -10,10 +11,24 @@ class MainDoctor extends StatefulWidget {
 }
 
 class _MainDoctorState extends State<MainDoctor> {
-  String id;
-  String peer;
   String groupchatId;
-  String checked;
+  String peerid;
+  String id = ''; //idlogin
+  String check = '';
+  SharedPreferences prefs;
+  @override
+  void initState() {
+    super.initState();
+    readLocal();
+  }
+
+  void readLocal() async {
+    prefs = await SharedPreferences.getInstance();
+    id = prefs.getString('id') ?? '';
+
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -35,7 +50,7 @@ class _MainDoctorState extends State<MainDoctor> {
       body: Center(
         child: Container(
           child: StreamBuilder(
-            stream: Firestore.instance.collection('users').snapshots(),
+            stream: Firestore.instance.collection('Patient').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
                 return CircularProgressIndicator();
@@ -55,105 +70,86 @@ class _MainDoctorState extends State<MainDoctor> {
   }
 
   Widget buildList(BuildContext context, DocumentSnapshot document) {
-    return Container(
-      child: document['role'] != 'Patient'
-          ? Container()
-          : document['grouppatient'] == document['have']
-              ? FlatButton(
-                  child: Row(
-                    children: <Widget>[
-                      Material(
-                        child: CachedNetworkImage(
-                          placeholder: (context, url) => Container(
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 1.0,
-                                ),
-                                width: 50.0,
-                                height: 50.0,
-                                padding: EdgeInsets.all(15.0),
-                              ),
-                          imageUrl: document['photoUrl'],
-                          width: 50.0,
-                          height: 50.0,
-                          fit: BoxFit.cover,
-                        ),
-                        borderRadius: BorderRadius.all(Radius.circular(25.0)),
-                        clipBehavior: Clip.hardEdge,
+    return document['check'] != 'true'+id ? Container()
+    :Container(
+      child: FlatButton(
+        child: Row(
+          children: <Widget>[
+            Material(
+              child: CachedNetworkImage(
+                placeholder: (context, url) => Container(
+                      child: CircularProgressIndicator(
+                        strokeWidth: 1.0,
                       ),
-                      Flexible(
-                        child: Container(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Text(
-                                  'Name: ${document['Name']}',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                alignment: Alignment.centerLeft,
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
-                              ),
-                              Container(
-                                child: Text(
-                                  'Department: ${document['Department'] ?? 'Not available'}',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                alignment: Alignment.centerLeft,
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                              ),
-                              Container(
-                                child: Text(
-                                  'limit: ${document['status'] ?? 'unlimited'}',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                alignment: Alignment.centerLeft,
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                              )
-                            ],
-                          ),
-                          margin: EdgeInsets.only(left: 20.0),
-                        ),
+                      width: 50.0,
+                      height: 50.0,
+                      padding: EdgeInsets.all(15.0),
+                    ),
+                imageUrl: document['photoUrl'],
+                width: 50.0,
+                height: 50.0,
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.all(Radius.circular(25.0)),
+              clipBehavior: Clip.hardEdge,
+            ),
+            Flexible(
+              child: Container(
+                child: Column(
+                  children: <Widget>[
+                    Container(
+                      child: Text(
+                        'Name: ${document['Name']}',
+                        style: TextStyle(color: Colors.black),
                       ),
-                    ],
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 5.0),
+                    ),
+                    Container(
+                      child: Text(
+                        'Department: ${document['Department'] ?? 'Not available'}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    ),
+                    Container(
+                      child: Text(
+                        'limit: ${document['status'] ?? 'unlimited'}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    )
+                  ],
+                ),
+                margin: EdgeInsets.only(left: 20.0),
+              ),
+            ),
+          ],
+        ),
+        onPressed: () {
+          peerid = document['uid'];
+          if (id.hashCode <= peerid.hashCode) {
+            groupchatId = '$id-$peerid';
+          } else {
+            groupchatId = '$peerid-$id';
+          }
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Chat(
+                    groupId: groupchatId,
                   ),
-                  onPressed: () {
-                    id = document['uid'];
-                    someMethod().then((value) {
-                      if (id.hashCode <= value.hashCode) {
-                        groupchatId = '$id-$value';
-                      } else {
-                        groupchatId = '$value-$id';
-                      }
-                      print(groupchatId);
-                      print(value);
-                      print(id);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => Chat(
-                                groupId: groupchatId,
-                                peerId: id,
-                                userId: value,
-                              ),
-                        ),
-                      );
-                    });
-                  },
-                  color: Colors.blueAccent,
-                  padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0)),
-                )
-              : Container(),
+            ),
+          );
+        },
+        color: Colors.blueAccent,
+        padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      ),
       margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
     );
-  }
-
-  someMethod() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    String id = user.uid;
-    return id;
   }
 }
