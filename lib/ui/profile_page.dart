@@ -28,6 +28,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     readLocal();
+    
   }
 
   void readLocal() async {
@@ -36,9 +37,6 @@ class _ProfileState extends State<Profile> {
     name = prefs.getString('name' ?? '');
     role = prefs.getString('role' ?? '');
     photoUrl = prefs.getString('photoUrl' ?? '');
-
-    // Force refresh input
-    setState(() {});
   }
 
   Future selectPhoto() async {
@@ -54,7 +52,8 @@ class _ProfileState extends State<Profile> {
       String fileName = id;
       StorageReference reference =
           FirebaseStorage
-          .instance.ref()
+          .instance
+          .ref()
           .child(fileName);
       StorageUploadTask uploadTask = reference.putFile(selectedImage);
       StorageTaskSnapshot storageTaskSnapshot;
