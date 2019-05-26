@@ -188,15 +188,14 @@ class MainPatientState extends State<MainPatient> {
             FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
-                print(limit);
                 print(int.parse(limit) - 1);
                 if (id.hashCode <= peerid.hashCode) {
                   groupchatId = '$id-$peerid';
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if ((check == peerid || check == '') && int.parse(limit) >= 0) {
-                  if (check == '') {
+                if ((check == peerid || check == '')) {
+                  if (check == ''  && int.parse(limit) >= 0) {
                     Firestore.instance
                         .collection('Patient')
                         .document(id)
