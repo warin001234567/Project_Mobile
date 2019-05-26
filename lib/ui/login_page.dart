@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import './button.dart';
 
 import '../services/usermanagement.dart';
 
@@ -70,25 +71,9 @@ class _LoginScreenState extends State<LoginScreen> {
                 Padding(
                   padding: EdgeInsets.only(top: 20,left: 40,right: 40),
 
-                  child: SizedBox(
+                  child: CustomButton(
+                    text: 'Login',
                     height: 40,
-                    child: RawMaterialButton(
-                    fillColor: Colors.blueGrey,
-                    child: Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Text(
-                          "Login",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 15
-                            
-                          ),
-                        ),
-                      ],
-                      ),
-                    shape: StadiumBorder(),
                     onPressed: (){
                       if(_formKey.currentState.validate()){
                       _auth.signInWithEmailAndPassword(
@@ -103,8 +88,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         });
                       }
                     },
-                  ),
-                  ),
+                  )
                   ),
                   Padding(
                     padding: EdgeInsets.only(top: 30),

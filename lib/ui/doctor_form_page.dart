@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import './button.dart';
 
 class DoctorForm extends StatefulWidget {
   @override
@@ -117,14 +118,11 @@ class _DoctorFormState extends State<DoctorForm> {
                   ),
                 ),
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 1,
-                    child: RaisedButton(
-                      child: Text("Register"),
-                      onPressed: () {
-                        auth
+              CustomButton(
+                text: 'Register',
+                height: 40,
+                onPressed: (){
+                  auth
                             .createUserWithEmailAndPassword(
                                 email: emailcontrol.text,
                                 password: passcontrol.text)
@@ -163,11 +161,8 @@ class _DoctorFormState extends State<DoctorForm> {
                             print(e);
                           });
                         });
-                      },
-                    ),
-                  ),
-                ],
-              ),
+                },
+              )
             ],
           ),
         ),
