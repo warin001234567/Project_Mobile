@@ -163,7 +163,8 @@ class _DoctorFormState extends State<DoctorForm> {
                 text: 'Register',
                 height: 40,
                 onPressed: (){
-                  auth
+                  if(_formkey.currentState.validate()){
+auth
                             .createUserWithEmailAndPassword(
                                 email: emailcontrol.text,
                                 password: passcontrol.text)
@@ -175,8 +176,8 @@ class _DoctorFormState extends State<DoctorForm> {
                             'email': user.email,
                             'uid': user.uid,
                             'role': "Doctor",
-                            'Name': name.text,
-                            'Department': _department,
+                            'name': name.text,
+                            'department': _department,
                             'limit': limit.text,
                             'status': "online",
                             'idNo': idNo.text,
@@ -185,14 +186,14 @@ class _DoctorFormState extends State<DoctorForm> {
                                 'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                           });
                           Firestore.instance
-                              .collection('/users')
+                              .collection('Patient')
                               .document(user.uid)
                               .setData({
                             'email': user.email,
                             'uid': user.uid,
                             'role': "Doctor",
-                            'Name': name.text,
-                            'Department': _department,
+                            'name': name.text,
+                            'department': _department,
                             'limit': limit.text,
                             'status': "online",
                             'idNo': idNo.text,
@@ -206,6 +207,8 @@ class _DoctorFormState extends State<DoctorForm> {
                             print(e);
                           });
                         });
+                  }
+                  
                 },
               )
             ],
