@@ -28,7 +28,6 @@ class MainPatientState extends State<MainPatient> {
     setState(() {});
   }
 
-
   String groupchatId;
   String checked;
   @override
@@ -149,38 +148,54 @@ class MainPatientState extends State<MainPatient> {
               child: new Text("Yes"),
               onPressed: () async {
                 print(limit);
-                print(int.parse(limit)-1);
+                print(int.parse(limit) - 1);
                 if (id.hashCode <= peerid.hashCode) {
                   groupchatId = '$id-$peerid';
                 } else {
                   groupchatId = '$peerid-$id';
                 }
                 if ((check == peerid || check == '') && int.parse(limit) >= 0) {
-                  if (check == ''){
+                  if (check == '') {
                     Firestore.instance
-                    .collection('Patient')
-                    .document(id)
-                    .updateData({'check': peerid});
-                Firestore.instance
-                    .collection('Doctor')
-                    .document(peerid)
-                    .updateData({'limit': (int.parse(limit)-1).toString()});
-                  prefs = await SharedPreferences.getInstance();
-                  prefs.setString('check', peerid);
-                  check = prefs.getString('check');
+                        .collection('Patient')
+                        .document(id)
+                        .updateData({'check': peerid});
+                    Firestore.instance
+                        .collection('Doctor')
+                        .document(peerid)
+                        .updateData(
+                            {'limit': (int.parse(limit) - 1).toString()});
+                    prefs = await SharedPreferences.getInstance();
+                    prefs.setString('check', peerid);
+                    check = prefs.getString('check');
                   }
                   Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => Chat(
-                          groupId: groupchatId,
-                          peerId: peerid,
-                          userId: id),
+                          groupId: groupchatId, peerId: peerid, userId: id),
                     ),
                   );
-                } else{
-                  return print("ya kung za kub");
+                } else {
+                  Navigator.pop(context);
+                  showDialog(
+                    context: context,
+                    builder: (context){
+                      return AlertDialog(
+                    title: Text('Error'),
+                    content: Text('You have another consult.'),
+                    actions: <Widget>[
+                      FlatButton(
+                        child: Text('Close'),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      )
+                    ],
+                  );
+                    }
+                  );
                 }
               },
             ),
