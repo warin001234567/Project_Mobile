@@ -162,7 +162,7 @@ class MainPatientState extends State<MainPatient> {
                     .collection('users')
                     .document(id)
                     .updateData({'user limit': int.parse(limit)-1});
-                if (check == 'false') {
+                if (check == 'false' && limit != '0') {
                   prefs = await SharedPreferences.getInstance();
                   prefs.setString('check', 'true' + peerid);
                   check = prefs.getString('check');
@@ -176,7 +176,7 @@ class MainPatientState extends State<MainPatient> {
                           check: checked),
                     ),
                   );
-                } else if (check == 'true' + peerid) {
+                } else if (check == 'true' + peerid && limit != '0') {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
