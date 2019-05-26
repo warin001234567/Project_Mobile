@@ -4,7 +4,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Profile extends StatefulWidget {
@@ -15,7 +14,7 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  var photoUrl = '';
+  String photoUrl = '';
 
   File selectedImage;
 
@@ -34,6 +33,7 @@ class _ProfileState extends State<Profile> {
     prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id') ?? '';
     name = prefs.getString('name' ?? '');
+    photoUrl = prefs.getString('photoUrl' ?? '');
 
     // Force refresh input
     setState(() {});
@@ -49,7 +49,6 @@ class _ProfileState extends State<Profile> {
   }
 
   Future uploadImage() async {
-    someMethod().then((id) {
       String fileName = id;
       StorageReference reference =
           FirebaseStorage.instance.ref().child(fileName);
@@ -71,12 +70,13 @@ class _ProfileState extends State<Profile> {
           });
         }
       });
-    });
+    
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+      appBar: AppBar(title: Text('Profile'),),
         body: new Stack(
       children: <Widget>[
         FutureBuilder(
@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
             if (snapshot.hasData) {
               return buildImage(context, snapshot.data.data["photoUrl"]);
             } else {
-              return Text("No data");
+              return CircularProgressIndicator();
             }
           },
         ),
@@ -93,11 +93,8 @@ class _ProfileState extends State<Profile> {
     ));
   }
 
-  Positioned buildImage(BuildContext context, String photoUrl) {
-    return Positioned(
-        width: 350.0,
-        left: 4.0,
-        top: MediaQuery.of(context).size.height / 5,
+  Widget buildImage(BuildContext context, String photoUrl) {
+    return Center(
         child: Column(
           children: <Widget>[
             Container(
@@ -157,9 +154,4 @@ class _ProfileState extends State<Profile> {
         ));
   }
 
-  someMethod() async {
-    FirebaseUser user = await FirebaseAuth.instance.currentUser();
-    String id = user.uid;
-    return id;
-  }
 }

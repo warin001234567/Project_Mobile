@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:project_mobile/ui/add.dart';
-import 'add.dart';
 import 'main_patient.dart';
 import 'profile_page.dart';
 class HomePatient extends StatefulWidget{

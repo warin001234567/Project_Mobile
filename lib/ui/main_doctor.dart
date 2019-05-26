@@ -38,7 +38,7 @@ class _MainDoctorState extends State<MainDoctor> {
             stream: Firestore.instance.collection('users').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Text("No data");
+                return CircularProgressIndicator();
               } else {
                 return ListView.builder(
                   padding: EdgeInsets.all(10.0),

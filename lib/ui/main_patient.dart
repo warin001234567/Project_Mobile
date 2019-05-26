@@ -28,6 +28,7 @@ class MainPatientState extends State<MainPatient> {
     setState(() {});
   }
 
+
   String groupchatId;
   String checked;
   @override
@@ -56,7 +57,7 @@ class MainPatientState extends State<MainPatient> {
             stream: Firestore.instance.collection('Doctor').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
-                return Text("No data");
+                return CircularProgressIndicator();
               } else {
                 return ListView.builder(
                   padding: EdgeInsets.all(10.0),
@@ -154,7 +155,7 @@ class MainPatientState extends State<MainPatient> {
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if (check == 'false' && limit != '0') {
+                if (check == 'false' && int.parse(limit) > 0) {
                                   Firestore.instance
                     .collection('users')
                     .document(id)
@@ -175,7 +176,7 @@ class MainPatientState extends State<MainPatient> {
                           userId: id),
                     ),
                   );
-                } else if (check == 'true' + peerid && limit != '0') {
+                } else if (check == 'true' + peerid && int.parse(limit) >= 0) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -185,7 +186,7 @@ class MainPatientState extends State<MainPatient> {
                           userId: id),
                     ),
                   );
-                } else {
+                } else{
                   return print("ya kung za kub");
                 }
               },
