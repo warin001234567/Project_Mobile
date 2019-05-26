@@ -25,89 +25,104 @@ class RoleScreenState extends State<RoleScreen> {
           "Register New Account",
         ),
       ),
-      body: Center(
-        key: _formkey,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Row(
+      body: Stack(
+        children: <Widget>[
+          Center(
+            child: Image.asset(
+              'res/images/regist-bg.jpg',
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              fit: BoxFit.fill,
+            ),
+          ),
+          Center(
+            key: _formkey,
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Column(
-                  // crossAxisAlignment: CrossAxisAlignment.start,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Text('Register As',
-                      style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Column(
+                      // crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 30),
+                          child: Text('Register As',
+                            style: TextStyle(
+                              fontSize: 25,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        )
+                      ],
                     )
                   ],
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child:GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => DoctorForm()));
-                        },
-                        child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            'res/images/doc-select.jpg',
-                            height: 120.0,
-                            width: 120.0,
-                            fit: BoxFit.fill
-                          ),
-                        )
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 50.0),
-                      child: Text('Doctor'),
-                    )
-                  ]
                 ),
-                Column(
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child:GestureDetector(
-                        onTap: () {
-                          Navigator.push(context,MaterialPageRoute(builder: (context) => PatientForm()));
-                        },
-                        child: ClipRRect(
-                          borderRadius: new BorderRadius.circular(10.0),
-                          child: Image.asset(
-                            'res/images/pat-select.jpg',
-                            height: 120.0,
-                            width: 120.0,
-                            fit: BoxFit.fill
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,MaterialPageRoute(builder: (context) => DoctorForm()));
+                            },
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                'res/images/doc-select.jpg',
+                                height: 120.0,
+                                width: 120.0,
+                                fit: BoxFit.fill
+                              ),
+                            )
                           ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 50.0),
+                          child: Text('Doctor'),
                         )
-                      ),
+                      ]
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 49.0),
-                      child: Text('Patient'),
-                    )
-                  ]
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Padding(
+                          padding: EdgeInsets.all(10.0),
+                          child:GestureDetector(
+                            onTap: () {
+                              Navigator.push(context,MaterialPageRoute(builder: (context) => PatientForm()));
+                            },
+                            child: ClipRRect(
+                              borderRadius: new BorderRadius.circular(10.0),
+                              child: Image.asset(
+                                'res/images/pat-select.jpg',
+                                height: 120.0,
+                                width: 120.0,
+                                fit: BoxFit.fill
+                              ),
+                            )
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: 49.0),
+                          child: Text('Patient'),
+                        )
+                      ]
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ]
-        )
-      ),
+              ]
+            )
+          ),
+        ]
+      )
     );
   }
 }
