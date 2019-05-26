@@ -85,7 +85,9 @@ class _ProfileState extends State<Profile> {
             if (snapshot.hasData) {
               return buildImage(context, snapshot.data.data["photoUrl"]);
             } else {
-              return CircularProgressIndicator();
+              return Center(
+                child:CircularProgressIndicator()
+              );
             }
           },
         ),
@@ -97,6 +99,8 @@ class _ProfileState extends State<Profile> {
     return Center(
         child: Column(
           children: <Widget>[
+
+            SizedBox(height: 60.0),
             Container(
                 width: 150.0,
                 height: 150.0,
@@ -109,7 +113,6 @@ class _ProfileState extends State<Profile> {
                       BoxShadow(blurRadius: 7.0, color: Colors.black)
                     ])),
             SizedBox(height: 20.0),
-            SizedBox(height: 65.0),
             Text(
               name,
               style: TextStyle(
@@ -125,13 +128,13 @@ class _ProfileState extends State<Profile> {
                   fontStyle: FontStyle.italic,
                   fontFamily: 'Montserrat'),
             ),
-            SizedBox(height: 75.0),
+            SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 Container(
-                    height: 30.0,
-                    width: 95.0,
+                    height: 40.0,
+                    width: 120.0,
                     child: Material(
                       borderRadius: BorderRadius.circular(20.0),
                       shadowColor: Colors.blueAccent,
