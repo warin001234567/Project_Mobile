@@ -147,9 +147,9 @@ class _PatientFormState extends State<PatientForm> {
                                   'email': user.email,
                                   'uid': user.uid,
                                   'role': "Patient",
-                                  'Name': name.text,
-                                  'check': 'false',
-                                  'Symptom': symptom.text,
+                                  'name': name.text,
+                                  'check': '',
+                                  'symptom': symptom.text,
                                   'photoUrl':
                                       'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
                                 }).then((value) {
@@ -172,6 +172,6 @@ class _PatientFormState extends State<PatientForm> {
                 )
               )
           )
-    );
+      );
   }
 }
