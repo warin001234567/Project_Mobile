@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import './doctorform.dart';
-import './patientform.dart';
+import './doctor_form_page.dart';
+import './patient_form_page.dart';
 
 
-class RegisterScreen extends StatefulWidget {
+class RoleScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  RoleScreenState createState() => RoleScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
+class RoleScreenState extends State<RoleScreen> {
   final _formkey =GlobalKey<FormState>();
   TextEditingController emailcontrol =TextEditingController();
   TextEditingController passcontrol =TextEditingController();

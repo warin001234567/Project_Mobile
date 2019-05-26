@@ -16,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       body: Padding(
         padding: EdgeInsets.only(top: 80),
         
@@ -105,7 +106,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     shape: StadiumBorder(),
                     onPressed: (){
-
+                      _auth.signInWithEmailAndPassword(
+                          email: emailcontroller.text,
+                          password: passwordcontroller.text,
+                        ).then((FirebaseUser user) async {
+                          if(user.isEmailVerified){
+                            print("Go to home screen");
+                          }else{
+                            UserManagement().authorizeAccess(context);
+                          }
+                        });
                     },
                   ),
                   ),
@@ -158,7 +168,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 side: BorderSide(
                                   width: 0.5
                                 )
-                              ),
+                              ), onPressed: () {},
                             ),
                           ),
                           ),
@@ -182,7 +192,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 side: BorderSide(
                                   width: 0.5
                                 )
-                              ),
+                              ), onPressed: () {
+                                
+                              },
                             ),
                           ),
                           )
@@ -212,7 +224,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   ),
                                 ),
                                 onPressed: (){
-
+                                  Navigator.pushNamed(context, "/register");
                                 },
                                 )
                           ],

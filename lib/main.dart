@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import './ui/login_page.dart';
-import './ui/register_page.dart';
-import './ui/homepage.dart';
-import './ui/show.dart';
+import './ui/role_page.dart';
+import './ui/chat_page.dart';
 import './ui/add.dart';
-import './ui/maindoctor.dart';
-import './ui/homedoctor.dart';
-import './ui/home.dart';
+import './ui/home_doctor.dart';
+import './ui/main_patient.dart';
+import './ui/home_patient.dart';
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -22,12 +21,12 @@ class MyApp extends StatelessWidget {
       // home: MyHomePage(),
       routes:{
        "/" :(context) => LoginScreen(),
-       "/register": (context) => RegisterScreen(),
-       '/homepage': (BuildContext context) => HomePage(),
+       "/register": (context) => RoleScreen(),
+       '/homepage': (BuildContext context) => MainPatient(),
        "/show": (context) => Chat(),
        "/add": (context) => Adddoctor(),
        "/chat": (context) => HomeDoctor(),
-       "/home": (context) => Home(),
+       "/home": (context) => HomePatient(),
         },
     );
   }

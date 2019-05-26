@@ -3,9 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../ui/home.dart';
-import '../ui/maindoctor.dart';
-import '../ui/homedoctor.dart';
+import '../ui/home_patient.dart';
+import '../ui/home_doctor.dart';
+
 
  
 class UserManagement {
@@ -25,9 +25,11 @@ class UserManagement {
           prefs = await SharedPreferences.getInstance();
           await prefs.setString('id', dosc.documents[0].data['uid']);
           await prefs.setString('name', dosc.documents[0].data['Name']);
+          await prefs.setString('check', dosc.documents[0].data['check']);
+          print(prefs.getString('check'));
           print(prefs.getString('id'));
           print(prefs.getString('name'));// Save data in flutter 
-          Navigator.push(context,MaterialPageRoute(builder: (context) => Home(), ),);
+          Navigator.push(context,MaterialPageRoute(builder: (context) => HomePatient(), ),);
         }
         }
       });

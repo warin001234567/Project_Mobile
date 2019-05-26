@@ -1,53 +1,50 @@
-import 'dart:io';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class DoctorForm extends StatefulWidget {
+
+class PatientForm extends StatefulWidget {
   @override
-  _DoctorFormState createState() => _DoctorFormState();
+  _PatientFormState createState() => _PatientFormState();
 }
 
-class _DoctorFormState extends State<DoctorForm> {
+class _PatientFormState extends State<PatientForm> {
   final _formkey =GlobalKey<FormState>();
   TextEditingController emailcontrol =TextEditingController();
   TextEditingController passcontrol =TextEditingController();
   TextEditingController passconfcontrol =TextEditingController();
   TextEditingController name =TextEditingController();
-  TextEditingController department =TextEditingController();
-  TextEditingController limit = TextEditingController();
+  TextEditingController symptom =TextEditingController();
   FirebaseAuth auth = FirebaseAuth.instance;
-  File sampleImage;
- 
-  Future getImage() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
- 
-    setState(() {
-      sampleImage = tempImage;
-    });
-  }
- 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false ,
       appBar: AppBar(
         title: Text("Register New Account"),
       ),
-      body: WillPopScope(
+      body: Padding(
+        padding: EdgeInsets.all(18),
         child: Form(
           key: _formkey,
           child: Column(
             children: <Widget>[
-              Row(
-                // children: <Widget>[
-                //   IconButton(icon: Icon(Icons.add_a_photo), onPressed: () {
-                //     getImage();
-                //   },
-                //   ),
-                // ],
-              ),
+              // Row(
+              //   children: <Widget>[
+              //     IconButton(
+              //       icon: Icon(Icons.accessibility),
+              //       onPressed: () {
+              //         Firestore.instance.collection('/Doctor');
+              //       },
+              //     ),
+              //     IconButton(
+              //       icon: Icon(Icons.pan_tool),
+              //       onPressed: () {
+              //         Firestore.instance.collection('/Pantial');
+              //       },)
+              //   ],
+              // ),
               TextFormField(
                 decoration: InputDecoration(labelText: "Email"),
                 controller: emailcontrol,
@@ -76,23 +73,16 @@ class _DoctorFormState extends State<DoctorForm> {
               ),
               TextFormField(
                 decoration:InputDecoration(labelText: "Name"),
-
                 controller: name,
                 validator: (value){
                   if(value.isEmpty) return "Name is required";
                 }
               ),
               TextFormField(
-                decoration:InputDecoration(labelText: "Limit patient"),
-
-                controller: limit,
-              ),
-              TextFormField(
-                decoration:InputDecoration(labelText: "Department"),
-
-                controller: department,
+                decoration:InputDecoration(labelText: "Symptom"),
+                controller: symptom,
                 validator: (value){
-                  if(value.isEmpty) return "Department is required";
+                  if(value.isEmpty) return "Symptom is required";
                 }
               ),
               Row(
@@ -104,32 +94,21 @@ class _DoctorFormState extends State<DoctorForm> {
                       onPressed: () {
                             auth.createUserWithEmailAndPassword(
                             email: emailcontrol.text, password: passcontrol.text).then((user) {
-                              Firestore.instance.collection('Doctor').document(user.uid).setData({
-                                'email': user.email,
-                                'uid': user.uid,
-                                'role': "Doctor",
-                                'Name': name.text,
-                                'Department': department.text,
-                                'user limit': limit.text,
-                                'status': "online",
-                                'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
-                              });
                               Firestore.instance.collection('/users').document(user.uid).setData({
                                 'email': user.email,
                                 'uid': user.uid,
-                                'role': "Doctor",
+                                'role': "Patient",
                                 'Name': name.text,
-                                'Department': department.text,
-                                'user limit': limit.text,
-                                'status': "online",
+                                'check': 'false',
+                                'Symptom': symptom.text,
                                 'photoUrl':'https://firebasestorage.googleapis.com/v0/b/projecmobile-ab028.appspot.com/o/test.jpg?alt=media&token=55aafcc7-dd2c-4754-84c9-d24adad591d1'
-                              }).then((value) {
+                              }).then((value) { 
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pushReplacementNamed('/');
                               }).catchError((e) {
                                 print(e);
                               });                                           
-                        });                  
+                        });  
                       },
                     ),
                   ),
@@ -137,11 +116,9 @@ class _DoctorFormState extends State<DoctorForm> {
               ),
             ],
           ),
-        ), onWillPop: () {
-          Navigator.pushNamed(context, "/register");
-        },
+        )
       ),
     );
   }
-}
 
+}

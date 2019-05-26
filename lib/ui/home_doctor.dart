@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:project_mobile/ui/add.dart';
-import 'homepage.dart';
-import 'profile.dart';
-class Home extends StatefulWidget{
+import 'profile_page.dart';
+import './main_doctor.dart';
+class HomeDoctor extends StatefulWidget{
   @override
-  HomeState createState() {
-    return new HomeState();
+  HomeDoctorState createState() {
+    return new HomeDoctorState();
   }
 }
 
-class HomeState extends State<Home> {
+class HomeDoctorState extends State<HomeDoctor> {
   int _currentIndex = 0;
   final List<Widget> _home = [
-    Adddoctor(),Profile()
+    MainDoctor(),Profile()
   ];
     bool showDialog = false;
-
-
 
   @override
   Widget build(BuildContext context){
