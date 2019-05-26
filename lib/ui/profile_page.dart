@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
+import 'button.dart';
 
 class Profile extends StatefulWidget {
   final String userId;
@@ -106,30 +107,14 @@ class _ProfileState extends State<Profile> {
                 width: 150.0,
                 height: 150.0,
                 decoration: BoxDecoration(
-                    color: Colors.red,
+                    
                     image: DecorationImage(
                         image: NetworkImage(photoUrl), fit: BoxFit.cover),
                     borderRadius: BorderRadius.all(Radius.circular(75.0)),
                     boxShadow: [
                       BoxShadow(blurRadius: 7.0, color: Colors.black)
                     ])),
-            SizedBox(height: 20.0),
-            Text(
-              name,
-              style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  fontFamily: 'Montserrat'),
-            ),
-            SizedBox(height: 15.0),
-            Text(
-              role,
-              style: TextStyle(
-                  fontSize: 17.0,
-                  fontStyle: FontStyle.italic,
-                  fontFamily: 'Montserrat'),
-            ),
-            SizedBox(height: 20.0),
+                                SizedBox(height: 20.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
@@ -154,6 +139,30 @@ class _ProfileState extends State<Profile> {
                     )),
               ],
             ),
+            SizedBox(height: 20.0),
+            Text(
+              name,
+              style: TextStyle(
+                  fontSize: 30.0,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Montserrat'),
+            ),
+            SizedBox(height: 15.0),
+            Text(
+              role,
+              style: TextStyle(
+                  fontSize: 17.0,
+                  fontStyle: FontStyle.italic,
+                  fontFamily: 'Montserrat'),
+            ),
+            SizedBox(height: 15.0),
+            CustomButton(
+              text: "Change Profile",
+              width: 200,
+              height: 50,
+              onPressed: () {
+                Navigator.pushNamed(context, "/change");
+              },)
           ],
         ));
   }
