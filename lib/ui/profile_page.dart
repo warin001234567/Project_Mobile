@@ -22,7 +22,7 @@ class _ProfileState extends State<Profile> {
 
   String id = '';
   String name = '';
-
+  String role = '';
   @override
   void initState() {
     super.initState();
@@ -33,6 +33,7 @@ class _ProfileState extends State<Profile> {
     prefs = await SharedPreferences.getInstance();
     id = prefs.getString('id') ?? '';
     name = prefs.getString('name' ?? '');
+    role = prefs.getString('role' ?? '');
     photoUrl = prefs.getString('photoUrl' ?? '');
 
     // Force refresh input
@@ -122,7 +123,7 @@ class _ProfileState extends State<Profile> {
             ),
             SizedBox(height: 15.0),
             Text(
-              'Actor',
+              role,
               style: TextStyle(
                   fontSize: 17.0,
                   fontStyle: FontStyle.italic,
