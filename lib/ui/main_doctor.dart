@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'chat_page.dart';
 
 class MainDoctor extends StatefulWidget {
@@ -14,8 +15,19 @@ class _MainDoctorState extends State<MainDoctor> {
   String peer;
   String groupchatId;
   String checked;
+  String uid;
+  SharedPreferences prefs;
+  
+  void readLocal() async {
+    prefs = await SharedPreferences.getInstance();
+    uid = prefs.getString('id') ?? '';
+  }
   @override
   Widget build(BuildContext context) {
+    // Force refresh input
+    setState(() {
+      readLocal();
+    });
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Main'),
@@ -35,31 +47,34 @@ class _MainDoctorState extends State<MainDoctor> {
       body: Center(
         child: Container(
           child: StreamBuilder(
-            stream: Firestore.instance.collection('Patient').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              } else {
-                return ListView.builder(
-                  padding: EdgeInsets.all(10.0),
-                  itemBuilder: (context, index) =>
-                      buildList(context, snapshot.data.documents[index]),
-                  itemCount: snapshot.data.documents.length,
-                );
-              }
-            },
-          ),
+                  stream: Firestore.instance.collection('Patient').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return ListView.builder(
+                        padding: EdgeInsets.all(10.0),
+                        itemBuilder: (context, index) {
+                          return Container(
+                              child: buildList(
+                                  context, snapshot.data.documents[index]));
+                        },
+                        itemCount: snapshot.data.documents.length,
+                      );
+                    }
+                  },
+                ),
         ),
       ),
     );
   }
 
   Widget buildList(BuildContext context, DocumentSnapshot document) {
-    return Container(
-      child: document['role'] != 'Patient'
-          ? Container()
-          : document['grouppatient'] == document['have']
-              ? FlatButton(
+    print(uid);
+    print(document.data);
+    if(document.data['check'] == uid){
+      return Container(
+              child: FlatButton(
                   child: Row(
                     children: <Widget>[
                       Material(
@@ -86,7 +101,7 @@ class _MainDoctorState extends State<MainDoctor> {
                             children: <Widget>[
                               Container(
                                 child: Text(
-                                  'Name: ${document['Name']}',
+                                  'Name: ${document['name']}',
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 alignment: Alignment.centerLeft,
@@ -95,16 +110,7 @@ class _MainDoctorState extends State<MainDoctor> {
                               ),
                               Container(
                                 child: Text(
-                                  'Department: ${document['Department'] ?? 'Not available'}',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                alignment: Alignment.centerLeft,
-                                margin:
-                                    EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
-                              ),
-                              Container(
-                                child: Text(
-                                  'limit: ${document['status'] ?? 'unlimited'}',
+                                  'Symptom: ${document['symptom'] ?? 'Not available'}',
                                   style: TextStyle(color: Colors.black),
                                 ),
                                 alignment: Alignment.centerLeft,
@@ -126,9 +132,6 @@ class _MainDoctorState extends State<MainDoctor> {
                       } else {
                         groupchatId = '$value-$id';
                       }
-                      print(groupchatId);
-                      print(value);
-                      print(id);
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -145,10 +148,11 @@ class _MainDoctorState extends State<MainDoctor> {
                   padding: EdgeInsets.fromLTRB(25.0, 10.0, 25.0, 10.0),
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0)),
-                )
-              : Container(),
+                ),
       margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
     );
+    }
+    
   }
 
   someMethod() async {

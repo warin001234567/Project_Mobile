@@ -90,6 +90,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           }else{
                             UserManagement().authorizeAccess(context);
                           }
+                        }).catchError((onError)=>{
+                            Scaffold.of(_formKey.currentContext)
+                              .showSnackBar(SnackBar(
+                            content: Text(onError.toString()),
+                              )
+                              )
                         });
                       }
                     },

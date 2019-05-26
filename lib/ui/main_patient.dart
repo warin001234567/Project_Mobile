@@ -52,57 +52,63 @@ class MainPatientState extends State<MainPatient> {
       ),
       body: Center(
         child: Container(
-          child: ListView(children: <Widget>[
+            child: ListView(
+          children: <Widget>[
             StreamBuilder(
-            stream: Firestore.instance.collection('Doctor').where('uid', isEqualTo: prefs.getString('check')).snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              } else {
-                return ExpansionTile(title: Text("Consult Doctor"),
-                 children: <Widget>[
-                  ListView.builder(
-                  padding: EdgeInsets.all(10.0),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                    if(snapshot.data.documents[index].data['uid'] == prefs.getString('check')){
-                      return Container(
-                        child:
-                          buildList(context, snapshot.data.documents[index])
+              stream: Firestore.instance
+                  .collection('Doctor')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                } else {
+                  return ExpansionTile(
+                    title: Text("Consult Doctor"),
+                    children: <Widget>[
+                      ListView.builder(
+                        padding: EdgeInsets.all(10.0),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          if (snapshot.data.documents[index].data['uid'] ==
+                              prefs.getString('check')) {
+                            return Container(
+                                child: buildList(
+                                    context, snapshot.data.documents[index]));
+                          }
+                        },
+                        itemCount: snapshot.data.documents.length,
+                      )
+                    ],
+                  );
+                }
+              },
+            ),
+            ExpansionTile(
+              title: Text('All doctor'),
+              children: <Widget>[
+                StreamBuilder(
+                  stream: Firestore.instance.collection('Doctor').snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    } else {
+                      return ListView.builder(
+                        padding: EdgeInsets.all(10.0),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return Container(
+                              child: buildList(
+                                  context, snapshot.data.documents[index]));
+                        },
+                        itemCount: snapshot.data.documents.length,
                       );
                     }
                   },
-                  itemCount: snapshot.data.documents.length,
-                )
-                ],);
-              }
-            },
-          ),
-          ExpansionTile(title: Text('All doctor'),
-          children: <Widget>[
-            StreamBuilder(
-            stream: Firestore.instance.collection('Doctor').snapshots(),
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return CircularProgressIndicator();
-              } else {
-                return ListView.builder(
-                  padding: EdgeInsets.all(10.0),
-                  shrinkWrap: true,
-                  itemBuilder: (context, index) {
-                      return Container(
-                          child: buildList(context, snapshot.data.documents[index])
-                      );
-                  },
-                  itemCount: snapshot.data.documents.length,
-                );
-              }
-            },
-          ),
-          ],)
-          
-          ],)
-        ),
+                ),
+              ],
+            )
+          ],
+        )),
       ),
     );
   }
@@ -136,7 +142,7 @@ class MainPatientState extends State<MainPatient> {
                   children: <Widget>[
                     Container(
                       child: Text(
-                        'Name: ${document['Name']}',
+                        'Name: ${document['name']}',
                         style: TextStyle(color: Colors.black),
                       ),
                       alignment: Alignment.centerLeft,
@@ -144,7 +150,7 @@ class MainPatientState extends State<MainPatient> {
                     ),
                     Container(
                       child: Text(
-                        'Department: ${document['Department'] ?? 'Not available'}',
+                        'Department: ${document['department'] ?? 'Not available'}',
                         style: TextStyle(color: Colors.black),
                       ),
                       alignment: Alignment.centerLeft,
@@ -215,22 +221,21 @@ class MainPatientState extends State<MainPatient> {
                 } else {
                   Navigator.pop(context);
                   showDialog(
-                    context: context,
-                    builder: (context){
-                      return AlertDialog(
-                    title: Text('Error'),
-                    content: Text('You have another consult.'),
-                    actions: <Widget>[
-                      FlatButton(
-                        child: Text('Close'),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                      )
-                    ],
-                  );
-                    }
-                  );
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('You have another consult.'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Close'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                        );
+                      });
                 }
               },
             ),
