@@ -141,7 +141,7 @@ class _ProfileState extends State<Profile> {
                         onTap: selectPhoto,
                         child: Center(
                           child: Text(
-                            id,
+                            'Change Picture',
                             style: TextStyle(
                                 color: Colors.white, fontFamily: 'Montserrat'),
                           ),

@@ -17,7 +17,9 @@ class UserManagement {
       .then((dosc) async {
         if(dosc.documents[0].exists){
         if(dosc.documents[0].data['role'] == 'Doctor'){
-          print(dosc.documents[0].data['uid']);
+          // if(dosc.documents[0].data['isValidated'] == 'true'){
+
+          // }
           Navigator.push(context,MaterialPageRoute(builder: (context) => HomeDoctor(), ),);
         }
         else if(dosc.documents[0].data['role'] == 'Patient'){

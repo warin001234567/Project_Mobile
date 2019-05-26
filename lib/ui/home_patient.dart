@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'form_page.dart';
 import 'main_patient.dart';
 import 'profile_page.dart';
 class HomePatient extends StatefulWidget{
@@ -12,7 +13,7 @@ class HomePatient extends StatefulWidget{
 class HomePatientState extends State<HomePatient> {
   int _currentIndex = 0;
   final List<Widget> _home = [
-    MainPatient(),Profile()
+    MainPatient(),FormScreen() ,Profile()
   ];
     bool showDialog = false;
 
@@ -35,6 +36,10 @@ class HomePatientState extends State<HomePatient> {
               icon: Icon(Icons.chat),
               title: Text("Chat"),
               
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.accessibility),
+              title: Text("Form")
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.accessibility),
