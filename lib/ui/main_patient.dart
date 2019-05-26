@@ -57,10 +57,11 @@ class MainPatientState extends State<MainPatient> {
             StreamBuilder(
               stream: Firestore.instance
                   .collection('Doctor')
+                  .where('uid', isEqualTo: check )
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData) {
-                  return CircularProgressIndicator();
+                  return Container();
                 } else {
                   return ExpansionTile(
                     title: Text("Consult Doctor"),
@@ -70,7 +71,7 @@ class MainPatientState extends State<MainPatient> {
                         shrinkWrap: true,
                         itemBuilder: (context, index) {
                           if (snapshot.data.documents[index].data['uid'] ==
-                              prefs.getString('check')) {
+                              check) {
                             return Container(
                                 child: buildList(
                                     context, snapshot.data.documents[index]));
@@ -183,20 +184,28 @@ class MainPatientState extends State<MainPatient> {
         // return object of type Dialog
         return AlertDialog(
           title: new Text("Do you want to talk with this doctor?"),
-          content: new Text("Please submit your answer"),
+          content: new Text("You can't change another consult"),
           actions: <Widget>[
             FlatButton(
               child: new Text("Yes"),
               onPressed: () async {
-                print(int.parse(limit) - 1);
                 if (id.hashCode <= peerid.hashCode) {
                   groupchatId = '$id-$peerid';
                 } else {
                   groupchatId = '$peerid-$id';
                 }
-                if ((check == peerid || check == '')) {
-                  if (check == ''  && int.parse(limit) >= 0) {
-                    Firestore.instance
+                if (check == peerid) {
+                    
+                  Navigator.pop(context);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Chat(
+                          groupId: groupchatId, peerId: peerid, userId: id),
+                    ),
+                  );
+                }else if( check == '' && int.parse(limit)> 0){
+                  Firestore.instance
                         .collection('Patient')
                         .document(id)
                         .updateData({'check': peerid});
@@ -208,8 +217,7 @@ class MainPatientState extends State<MainPatient> {
                     prefs = await SharedPreferences.getInstance();
                     prefs.setString('check', peerid);
                     check = prefs.getString('check');
-                  }
-                  Navigator.pop(context);
+                    Navigator.pop(context);
                   Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -217,8 +225,28 @@ class MainPatientState extends State<MainPatient> {
                           groupId: groupchatId, peerId: peerid, userId: id),
                     ),
                   );
-                } else {
+                }
+                 else if(int.parse(limit) <= 0) {
                   Navigator.pop(context);
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('This doctor have limit consult, please find another'),
+                          actions: <Widget>[
+                            FlatButton(
+                              child: Text('Close'),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            )
+                          ],
+                        );
+                      });
+                }
+                else{
+                   Navigator.pop(context);
                   showDialog(
                       context: context,
                       builder: (context) {
