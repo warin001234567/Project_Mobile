@@ -52,7 +52,33 @@ class MainPatientState extends State<MainPatient> {
       ),
       body: Center(
         child: Container(
-          child: StreamBuilder(
+          child: ListView(children: <Widget>[
+            StreamBuilder(
+            stream: Firestore.instance.collection('Doctor').where('uid', isEqualTo: prefs.getString('check')).snapshots(),
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return CircularProgressIndicator();
+              } else {
+                return ListView.builder(
+                  padding: EdgeInsets.all(10.0),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                    if(snapshot.data.documents[index].data['uid'] == prefs.getString('check')){
+                      return Column(
+                        children: <Widget>[
+                          Text("Your consult doctor"),
+                          buildList(context, snapshot.data.documents[index])
+                        ],
+                      );
+                    }
+                  },
+                  itemCount: snapshot.data.documents.length,
+                );
+              }
+            },
+          ),
+          Center(child:Text('All doctor')),
+          StreamBuilder(
             stream: Firestore.instance.collection('Doctor').snapshots(),
             builder: (context, snapshot) {
               if (!snapshot.hasData) {
@@ -60,13 +86,19 @@ class MainPatientState extends State<MainPatient> {
               } else {
                 return ListView.builder(
                   padding: EdgeInsets.all(10.0),
-                  itemBuilder: (context, index) =>
-                      buildList(context, snapshot.data.documents[index]),
+                  shrinkWrap: true,
+                  itemBuilder: (context, index) {
+                      return Container(
+                          child: buildList(context, snapshot.data.documents[index])
+                      );
+                  },
                   itemCount: snapshot.data.documents.length,
                 );
               }
             },
           ),
+          
+          ],)
         ),
       ),
     );
