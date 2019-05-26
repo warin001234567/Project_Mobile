@@ -28,6 +28,7 @@ class UserManagement {
           await prefs.setString('id', dosc.documents[0].data['uid']);
           await prefs.setString('name', dosc.documents[0].data['Name']);
           await prefs.setString('check', dosc.documents[0].data['check']);
+          await prefs.setString('role', dosc.documents[0].data['role']);
           await prefs.setString('photoUrl', dosc.documents[0].data['photoUrl']);
           print(prefs.getString('check'));
           print(prefs.getString('id'));
