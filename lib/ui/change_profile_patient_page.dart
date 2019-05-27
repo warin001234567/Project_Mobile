@@ -160,9 +160,17 @@ class _ChangePatientProfileState extends State<ChangePatientProfile> {
               stops: [0.0, 1.0],
             ),
             height: 30,
-            onPressed: () {
+            onPressed: () async {
+              Firestore.instance
+                              .collection('Patient')
+                              .document(id).updateData({'name': new_name.text});
+              prefs = await SharedPreferences.getInstance();
+              await prefs.setString('name', new_name.text);
+
               
-            }),
+              Navigator.pushNamed(context, '/home');
+            }
+            ),
       ],
     ));
   }

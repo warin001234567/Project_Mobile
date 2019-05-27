@@ -68,7 +68,7 @@ class DetailScreenState extends State<DetailScreen> {
   Widget buildList(BuildContext context, DocumentSnapshot document) {
       return Container(
         child: Card(
-          child: Text(document['symptom']),),
+          child: Text(document['eat']),),
       margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
     );
     
