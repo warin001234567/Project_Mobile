@@ -64,7 +64,7 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
           photoUrl = downloadUrl;
           print(photoUrl);
           Firestore.instance
-              .collection('Patient')
+              .collection('Doctor')
               .document(id)
               .updateData({'photoUrl': photoUrl});
           setState(() {
@@ -86,7 +86,7 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
           children: <Widget>[
             FutureBuilder(
               future:
-                  Firestore.instance.collection('Patient').document(id).get(),
+                  Firestore.instance.collection('Doctor').document(id).get(),
               builder: (context, AsyncSnapshot<DocumentSnapshot> snapshot) {
                 if (snapshot.hasData) {
                   return buildImage(context, snapshot.data.data["photoUrl"]);
@@ -138,7 +138,7 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
         ),
         SizedBox(height: 20.0),
         Padding(
-          padding: EdgeInsets.only(left: 50, right: 50, bottom: 20),
+          padding: EdgeInsets.only(left: 50, right: 50, bottom: 5),
           child: TextFormField(
               decoration: InputDecoration(
                   labelText: "Name: ", labelStyle: TextStyle(fontSize: 15)),
@@ -147,22 +147,22 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
                 if (value.isEmpty) return "Name is required";
               }),
         ),
-        SizedBox(height: 15.0),
         Padding(
-          padding: EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(left: 50, right: 50, bottom: 30),
           child: TextFormField(
             keyboardType: TextInputType.number,
-            decoration: InputDecoration(
-              labelText: "Limit patient",
-              labelStyle: TextStyle(fontSize: 10),
+          decoration: InputDecoration(
+            labelText: "Limit patient: ",
+            labelStyle: TextStyle(fontSize: 15),
             ),
-            controller: limit,
-            validator: (value) {
-              if (value.isEmpty) return "Please enter limit";
-              if (int.parse(value) <= 0)
-                return "Limit patient must more than 0";
-            },
-          ),
+          controller: limit,
+          validator: (value) {
+
+            if(value.isEmpty)return "Please enter limit";
+            if (int.parse(value) <= 0)
+              return "Limit patient must more than 0";
+          },
+        ),
         ),
         CustomButton(
             text: "Save",
@@ -177,9 +177,20 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
               stops: [0.0, 1.0],
             ),
             height: 30,
-            onPressed: () {
+            onPressed: () async {
+              Firestore.instance
+                              .collection('Doctor')
+                              .document(id).updateData({
+                                'name': new_name.text,
+                                'limit': int.parse(limit.text).toString(),
+                              });
+              prefs = await SharedPreferences.getInstance();
+              await prefs.setString('name', new_name.text);
+
               
-            }),
+              Navigator.pushNamed(context, '/home');
+            }
+            ),
       ],
     ));
   }
