@@ -1,10 +1,10 @@
-import 'package:cached_network_image/cached_network_image.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:project_mobile/ui/button.dart';
+
 import 'package:shared_preferences/shared_preferences.dart';
-import 'chat_page.dart';
+
 
 class DetailScreen extends StatefulWidget {
   @override
@@ -67,8 +67,11 @@ class DetailScreenState extends State<DetailScreen> {
 
   Widget buildList(BuildContext context, DocumentSnapshot document) {
       return Container(
-        child: Card(
-          child: Text(document['eat']),),
+        child: Column(children: <Widget>[
+          Text(document['eat']),
+          Text(document['symptom'])
+          ,Text(document['desc']),
+        ],),
       margin: EdgeInsets.only(bottom: 10.0, left: 5.0, right: 5.0),
     );
     

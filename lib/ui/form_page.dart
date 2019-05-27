@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/widgets.dart' as prefix0;
+
 import 'package:shared_preferences/shared_preferences.dart';
 import './button.dart';
 
@@ -11,9 +11,9 @@ class FormScreen extends StatefulWidget {
 }
 
 class _FormScreenState extends State<FormScreen> {
-    String id = ''; //idlogin
+  String id = ''; //idlogin
   SharedPreferences prefs;
-    @override
+  @override
   void initState() {
     super.initState();
     readLocal();
@@ -25,6 +25,7 @@ class _FormScreenState extends State<FormScreen> {
 
     setState(() {});
   }
+
   List<String> _departments = <String>[
     "Choose your Time",
     "Morning",
@@ -149,12 +150,25 @@ class _FormScreenState extends State<FormScreen> {
                                 onPressed: () {
                                   Firestore.instance
                                       .collection('Detail')
-                                      .document(id).collection(id).document().
-                                      setData({
-                                        'symptom': symptom.text,
-                                        'eat':_department,
-                                        'desc': desciption.text
-                                      });
+                                      .document(id)
+                                      .collection(id)
+                                      .document()
+                                      .setData({
+                                    'symptom': symptom.text,
+                                    'eat': _department,
+                                    'desc': desciption.text
+                                  });
+                                  AlertDialog(
+                                    title: Text("Your Form"),
+                                    content: Text("Success"),
+                                    actions: <Widget>[
+                                      FlatButton(
+                                          child: new Text("Yes"),
+                                          onPressed: () async {
+                                            Navigator.pop(context);
+                                          })
+                                    ],
+                                  );
                                 },
                               )),
                         ],

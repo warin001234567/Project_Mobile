@@ -44,7 +44,7 @@ class _ChangeDoctorProfileState extends State<ChangeDoctorProfile> {
   }
 
   Future selectPhoto() async {
-    var tempImage = await ImagePicker.pickImage(source: ImageSource.gallery);
+    var tempImage = await ImagePicker.pickImage(source: ImageSource.camera);
 
     setState(() {
       selectedImage = tempImage;
