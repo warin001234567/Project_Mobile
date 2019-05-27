@@ -43,7 +43,7 @@ class MainPatientState extends State<MainPatient> {
                 prefs = await SharedPreferences.getInstance();
                 prefs.clear();
                 FirebaseAuth.instance.signOut().then((value) {
-                  Navigator.of(context).pushReplacementNamed('/');
+                  Navigator.of(context).pushReplacementNamed('/login');
                 }).catchError((e) {
                   print(e);
                 });
@@ -152,6 +152,14 @@ class MainPatientState extends State<MainPatient> {
                     Container(
                       child: Text(
                         'Department: ${document['department'] ?? 'Not available'}',
+                        style: TextStyle(color: Colors.black),
+                      ),
+                      alignment: Alignment.centerLeft,
+                      margin: EdgeInsets.fromLTRB(10.0, 0.0, 0.0, 0.0),
+                    ),
+                                        Container(
+                      child: Text(
+                        'Department: ${document['limit'] ?? 'Not available'}',
                         style: TextStyle(color: Colors.black),
                       ),
                       alignment: Alignment.centerLeft,

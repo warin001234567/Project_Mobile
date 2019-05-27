@@ -34,7 +34,7 @@ class HomeDoctorState extends State<HomeDoctor> {
               
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.accessibility),
+              icon: Icon(Icons.account_box),
               title: Text("Profile")
             ),
           ],

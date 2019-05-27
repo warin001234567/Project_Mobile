@@ -39,7 +39,7 @@ class _MainDoctorState extends State<MainDoctor> {
               icon: new Icon(Icons.settings_power),
               onPressed: () {
                 FirebaseAuth.instance.signOut().then((value) {
-                  Navigator.of(context).pushReplacementNamed('/');
+                  Navigator.of(context).pushReplacementNamed('/login');
                 }).catchError((e) {
                   print(e);
                 });

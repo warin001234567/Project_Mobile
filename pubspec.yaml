@@ -33,17 +33,17 @@ dependencies:
   shared_preferences: 0.4.3
   font_awesome_flutter: ^8.4.0
   cached_network_image: ^0.7.0
+  flutter_swiper: any
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
+  flutter_launcher_icons: "^0.7.0"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://www.dartlang.org/tools/pub/pubspec
 
 # The following section is specific to Flutter.
 flutter:
-
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
@@ -70,5 +70,12 @@ flutter:
     - family: Quicksand
       fonts:
         - asset: fonts/Quicksand-Regular.ttf
+
+flutter_icons:
+  iOS: true
+  android: true
+  image_path: "res/images/logo.png"
+  # adaptive_icon_background: "res/images/background_logo.png"
+  # adaptive_icon_foreground: "res/images/foreground_logo.png"
   # For details regarding fonts from package dependencies,
   # see https://flutter.io/custom-fonts/#from-packages

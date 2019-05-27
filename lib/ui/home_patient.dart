@@ -38,11 +38,11 @@ class HomePatientState extends State<HomePatient> {
               
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.accessibility),
+              icon: Icon(Icons.add_box),
               title: Text("Form")
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.accessibility),
+              icon: Icon(Icons.account_box),
               title: Text("Profile")
             ),
           ],
