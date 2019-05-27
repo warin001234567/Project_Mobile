@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Pocket Doctor',
       debugShowCheckedModeBanner: false, //show bar debug
       theme: ThemeData(
         primarySwatch: Colors.blue,
